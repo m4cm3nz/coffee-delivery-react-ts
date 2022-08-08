@@ -20,16 +20,20 @@ body, input, text-area, p, button{
 }
 
 body::-webkit-scrollbar {
-  width: 0.3em;
+  width: 0;
 }
  
 :focus {
     outline: 0;
-    box-shadow: 0 0 0 2px ${(props) => props.theme['purple-dark']};
+    box-shadow: 0 0 0 2px ${(props) => props.theme.white};
 }
 
 ::selection{
     color: ${(props) => props.theme.white};;
-    background-color: ${(props) => props.theme['purple-dark']};
+    background-color: ${(props) => props.theme.yellow};
 }
+
+::placeholder {
+    color: ${(props) => props.theme['base-label']};
+  }
 `

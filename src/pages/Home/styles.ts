@@ -9,8 +9,7 @@ export const HomeContainer = styled.main`
 
   width: 100%;
   height: 34rem;
-
-  padding-top: 5.875rem;
+  padding: 5.875rem 8% 0 8%;
 
   background: url(${background}) center center;
   background-repeat: repeat-x;
@@ -23,8 +22,6 @@ export const Cover = styled.div`
   gap: 3.5rem;
 
   width: 100%;
-  max-width: 83%;
-
   margin-bottom: 6.75rem;
 
   h1 {
@@ -49,10 +46,9 @@ export const BulletContainer = styled.ul`
   align-content: flex-start;
 
   height: 8rem;
+  margin-top: 4.125rem;
 
   list-style: none;
-
-  margin-top: 4.125rem;
 `
 
 export const Bullet = styled.li`
@@ -62,7 +58,6 @@ export const Bullet = styled.li`
   gap: 0.75rem;
 
   width: 50%;
-
   margin: 0 0 1.25rem 0;
 
   font-size: 1rem;
@@ -81,8 +76,6 @@ export const Menu = styled.div`
   flex-direction: column;
 
   width: 100%;
-  max-width: 83%;
-
   padding-bottom: 8rem;
 
   h3 {
@@ -91,6 +84,7 @@ export const Menu = styled.div`
     font-weight: 800;
     font-size: 2rem;
     font-family: 'Baloo 2', cursive;
+
     color: ${(props) => props.theme['base-subtitle']};
   }
 
@@ -98,7 +92,6 @@ export const Menu = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-
     gap: 2rem;
 
     list-style: none;

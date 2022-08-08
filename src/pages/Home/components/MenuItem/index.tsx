@@ -1,52 +1,33 @@
-import { Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { ShoppingCart } from 'phosphor-react'
 import { NavLink } from 'react-router-dom'
 import expresso from '../../../../assets/coffee/expresso.svg'
-import {
-  MenuItemContainer,
-  AmountInput,
-  HeaderContainer,
-  FooterContainer,
-  SectionContainer,
-} from './styles'
+import { InputNumber } from '../../../../components/InputNumber'
+
+import { MenuItemContainer, Header, Footer, Section } from './styles'
 
 export function MenuItem() {
   return (
     <MenuItemContainer>
-      <HeaderContainer>
+      <Header>
         <img src={expresso} alt="expresso" />
         <section>
           <span>tradicional</span>
-          <span>Com Leite</span>
+          <span>com leite</span>
         </section>
-      </HeaderContainer>
-      <SectionContainer>
+      </Header>
+      <Section>
         <span>Expresso Tradicional</span>
         <p>O tradicional café feito com água quente e grãos moídos</p>
-      </SectionContainer>
-      <FooterContainer>
+      </Section>
+      <Footer>
         <span>
           <small>R$</small> <strong>9,90</strong>
         </span>
-        <AmountInput>
-          <button>
-            <Minus size={14} weight="bold" />
-          </button>
-          <input
-            type="number"
-            id="amount"
-            placeholder="0"
-            step={1}
-            min={0}
-            max={9}
-          />
-          <button>
-            <Plus size={14} weight="bold" />
-          </button>
-        </AmountInput>
+        <InputNumber />
         <NavLink to="/checkout" title="checkout">
           <ShoppingCart size={22} weight="fill" />
         </NavLink>
-      </FooterContainer>
+      </Footer>
     </MenuItemContainer>
   )
 }
