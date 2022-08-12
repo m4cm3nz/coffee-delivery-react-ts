@@ -27,7 +27,7 @@ export function Cart() {
           <strong>Total</strong>
           <strong>R$ 33,20</strong>
         </div>
-        <Button>Confirmar Pedido</Button>
+        <Button type="submit">Confirmar Pedido</Button>
       </footer>
     </CartContainer>
   )
