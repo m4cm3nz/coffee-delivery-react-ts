@@ -3,6 +3,7 @@ import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import { defaultTheme } from '../../styles/themes/default'
 import home from '../../assets/home.svg'
 import { MenuItem } from './components/MenuItem'
+import { coffeeMenu } from '../../data/coffeeMenu'
 
 export function Home() {
   const theme = defaultTheme
@@ -48,24 +49,11 @@ export function Home() {
       <Menu>
         <h3>Nossos cafés</h3>
         <ul>
-          <li>
-            <MenuItem />
-          </li>
-          <li>
-            <MenuItem />
-          </li>
-          <li>
-            <MenuItem />
-          </li>
-          <li>
-            <MenuItem />
-          </li>
-          <li>
-            <MenuItem />
-          </li>
-          <li>
-            <MenuItem />
-          </li>
+          {coffeeMenu.map((coffee) => (
+            <li key={coffee.id}>
+              <MenuItem {...coffee} />
+            </li>
+          ))}
         </ul>
       </Menu>
     </HomeContainer>
