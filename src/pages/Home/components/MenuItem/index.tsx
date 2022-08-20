@@ -1,4 +1,5 @@
 import { ShoppingCart } from 'phosphor-react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { InputNumber } from '../../../../components/InputNumber'
 import formatValue from '../../../../util/formatValue'
@@ -14,39 +15,57 @@ interface Coffee {
   image: string
 }
 
-export function MenuItem({
-  id,
-  image,
-  tags,
-  name,
-  description,
-  price,
-}: Coffee) {
+interface CartItem {
+  id: string
+  price: number
+  name: string
+  image: string
+  amount: number
+}
+
+interface MenuItemProps {
+  coffee: Coffee
+  onAddToCart: (item: CartItem) => void
+}
+
+export function MenuItem({ coffee, onAddToCart }: MenuItemProps) {
+  const [cartItem, setCartItem] = useState({
+    id: coffee.id,
+    price: coffee.price,
+    name: coffee.name,
+    image: coffee.image,
+    amount: 0,
+  })
+
   function handleAddToCart() {
-    console.log(id)
+    onAddToCart(cartItem)
   }
 
-  const formattedPrice = formatValue(price)
+  function handleAmountChange(value: number) {
+    setCartItem({ ...cartItem, amount: value })
+  }
+
+  const formattedPrice = formatValue(coffee.price)
 
   return (
     <MenuItemContainer>
       <Header>
-        <img src={image} alt="expresso" />
+        <img src={coffee.image} alt={coffee.name} />
         <section>
-          {tags.map((tag) => (
+          {coffee.tags.map((tag) => (
             <span key={tag}>{tag}</span>
           ))}
         </section>
       </Header>
       <Section>
-        <span>{name}</span>
-        <p>{description}</p>
+        <span>{coffee.name}</span>
+        <p>{coffee.description}</p>
       </Section>
       <Footer>
         <span>
           <small>R$</small> <strong>{formattedPrice}</strong>
         </span>
-        <InputNumber />
+        <InputNumber onChange={handleAmountChange} value={0} />
         <NavLink to="/checkout" title="checkout" onClick={handleAddToCart}>
           <ShoppingCart size={22} weight="fill" />
         </NavLink>

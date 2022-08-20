@@ -4,9 +4,18 @@ import { defaultTheme } from '../../styles/themes/default'
 import home from '../../assets/home.svg'
 import { MenuItem } from './components/MenuItem'
 import { coffeeMenu } from '../../data/coffeeMenu'
+import { CartContext, Item } from '../../contexts/CartContext'
+import { useContext } from 'react'
 
 export function Home() {
   const theme = defaultTheme
+
+  const { addItem } = useContext(CartContext)
+
+  function handleAddItemToCart(item: Item) {
+    console.log(item)
+    addItem(item)
+  }
 
   return (
     <HomeContainer>
@@ -51,7 +60,7 @@ export function Home() {
         <ul>
           {coffeeMenu.map((coffee) => (
             <li key={coffee.id}>
-              <MenuItem {...coffee} />
+              <MenuItem coffee={coffee} onAddToCart={handleAddItemToCart} />
             </li>
           ))}
         </ul>
