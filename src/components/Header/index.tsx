@@ -3,8 +3,13 @@ import { CheckoutButton, HeaderContainer, Localization } from './styles'
 import logo from '../../assets/logo.svg'
 import { MapPin, ShoppingCart } from 'phosphor-react'
 import { Link, NavLink } from 'react-router-dom'
+import { useContext } from 'react'
+import { CartContext } from '../../contexts/CartContext'
 
 export function Header() {
+  const { itemsCount } = useContext(CartContext)
+  const showItemsCountTag = itemsCount > 0
+
   return (
     <HeaderContainer>
       <div>
@@ -20,7 +25,7 @@ export function Header() {
             <NavLink to="/checkout" title="checkout">
               <ShoppingCart size={22} weight="fill" />
             </NavLink>
-            <small>3</small>
+            {showItemsCountTag && <small>{itemsCount}</small>}
           </CheckoutButton>
         </nav>
       </div>

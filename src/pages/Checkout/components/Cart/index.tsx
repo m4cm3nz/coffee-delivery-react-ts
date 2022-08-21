@@ -5,15 +5,8 @@ import { CartItem } from '../CartItem'
 import { Button, CartContainer } from './styles'
 
 export function Cart() {
-  const {
-    items,
-    subTotal,
-    deliveryTax,
-    total,
-    removeItem,
-    confirm,
-    updateItemAmount,
-  } = useContext(CartContext)
+  const { items, subTotal, deliveryTax, total, removeItem, updateItemAmount } =
+    useContext(CartContext)
 
   return (
     <CartContainer>
@@ -42,9 +35,7 @@ export function Cart() {
           <strong>Total</strong>
           <strong>R$ {total}</strong>
         </div>
-        <Button type="submit" onClick={confirm}>
-          Confirmar Pedido
-        </Button>
+        <Button type="submit">Confirmar Pedido</Button>
       </footer>
     </CartContainer>
   )

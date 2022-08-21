@@ -1,7 +1,23 @@
 import { Bank, CreditCard, CurrencyDollar, Money } from 'phosphor-react'
+import { MouseEvent, useContext } from 'react'
+
+import {
+  CartContext,
+  PaymentMethodType,
+} from '../../../../contexts/CartContext'
 import { Button, SectionContainer } from './styles'
 
 export function PaymentMethod() {
+  const { selectPaymentMethod, paymentMethod } = useContext(CartContext)
+
+  const credit = paymentMethod === 'credit'
+  const debit = paymentMethod === 'debit'
+  const cash = paymentMethod === 'cash'
+
+  function handleSelectPaymentMethod(event: MouseEvent<HTMLButtonElement>) {
+    selectPaymentMethod(event.currentTarget.id as PaymentMethodType)
+  }
+
   return (
     <SectionContainer>
       <header>
@@ -14,15 +30,30 @@ export function PaymentMethod() {
         </div>
       </header>
       <div>
-        <Button type="button">
+        <Button
+          id="credit"
+          type="button"
+          onClick={handleSelectPaymentMethod}
+          isSelected={credit}
+        >
           <Bank size={16} />
           Cartão de Crédito
         </Button>
-        <Button type="button">
+        <Button
+          id="debit"
+          type="button"
+          onClick={handleSelectPaymentMethod}
+          isSelected={debit}
+        >
           <CreditCard size={16} />
           Cartão de Débito
         </Button>
-        <Button type="button">
+        <Button
+          id="cash"
+          type="button"
+          onClick={handleSelectPaymentMethod}
+          isSelected={cash}
+        >
           <Money size={16} />
           Dinheiro
         </Button>

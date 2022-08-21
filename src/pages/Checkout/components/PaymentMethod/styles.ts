@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const SectionContainer = styled.section`
   padding: 2.5rem;
@@ -44,7 +44,11 @@ export const SectionContainer = styled.section`
   }
 `
 
-export const Button = styled.button`
+interface ButtonProps {
+  isSelected: boolean
+}
+
+export const Button = styled.button<ButtonProps>`
   display: flex;
   flex-grow: 1;
   flex-direction: row;
@@ -57,7 +61,17 @@ export const Button = styled.button`
   border: 0;
   padding: 16px;
 
-  background: ${(props) => props.theme['base-button']};
+  background: ${(props) =>
+    props.isSelected
+      ? props.theme['purple-light']
+      : props.theme['base-button']};
+
+  ${(props) =>
+    props.isSelected &&
+    css`
+      border: 2px solid ${props.theme.purple};
+    `}
+
   color: ${(props) => props.theme['base-text']};
 
   text-transform: uppercase;

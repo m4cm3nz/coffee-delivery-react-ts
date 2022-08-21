@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useEffect, useReducer } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
 import {
   addNewItemAction,
   removeItemAction,
@@ -14,15 +20,30 @@ export interface Item {
   amount: number
 }
 
+interface ConfirmCheckout {
+  cep: string
+  street: string
+  number: string
+  complement?: string
+  neighborhood: string
+  city: string
+  state: string
+}
+
+export type PaymentMethodType = 'credit' | 'debit' | 'cash'
+
 interface CartContextType {
   items: Item[]
+  itemsCount: number
   subTotal: number
   deliveryTax: number
   total: number
+  paymentMethod: PaymentMethodType | undefined
   addItem: (item: Item) => void
   removeItem: (coffeeId: string) => void
   updateItemAmount: (id: string, value: number) => void
-  confirm: () => void
+  selectPaymentMethod: (type: PaymentMethodType) => void
+  confirmCheckout: (data: ConfirmCheckout) => void
 }
 
 export const CartContext = createContext({} as CartContextType)
@@ -43,6 +64,10 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     return storedStateAsJson ? JSON.parse(storedStateAsJson) : noItemsCartState
   })
 
+  const [paymentMethod, setPaymentMethod] = useState<
+    PaymentMethodType | undefined
+  >()
+
   useEffect(() => {
     const stateJSON = JSON.stringify(cartState)
     localStorage.setItem('@coffee-delivery:cart-state', stateJSON)
@@ -62,13 +87,25 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     dispach(updateItemAmountAction(id, value))
   }
 
-  function confirm() {}
+  function confirmCheckout(data: ConfirmCheckout) {
+    console.log(data)
+    console.log(paymentMethod)
+  }
 
-  const subTotal = items
-    .map((item) => item.amount * item.price)
-    .reduce((previous, current) => {
-      return previous + current
-    })
+  function selectPaymentMethod(type: PaymentMethodType) {
+    setPaymentMethod(type)
+  }
+
+  const itemsCount = items.length
+
+  const subTotal =
+    itemsCount > 0
+      ? items
+          .map((item) => item.amount * item.price)
+          .reduce((previous, current) => {
+            return previous + current
+          })
+      : 0
 
   const deliveryTax = 3.5
   const total = subTotal + deliveryTax
@@ -77,13 +114,16 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     <CartContext.Provider
       value={{
         items,
+        itemsCount,
         subTotal,
         deliveryTax,
         total,
+        paymentMethod,
         addItem,
         removeItem,
         updateItemAmount,
-        confirm,
+        selectPaymentMethod,
+        confirmCheckout,
       }}
     >
       {children}
