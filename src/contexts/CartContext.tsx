@@ -40,7 +40,7 @@ interface CartContextType {
   total: number
   paymentMethod: PaymentMethodType | undefined
   addItem: (item: Item) => void
-  removeItem: (coffeeId: string) => void
+  removeItem: (id: string) => void
   updateItemAmount: (id: string, value: number) => void
   selectPaymentMethod: (type: PaymentMethodType) => void
   confirmCheckout: (data: ConfirmCheckout) => void

@@ -60,7 +60,7 @@ export function Home() {
         <ul>
           {coffeeMenu.map((coffee) => (
             <li key={coffee.id}>
-              <MenuItem coffee={coffee} onAddToCart={handleAddItemToCart} />
+              <MenuItem item={coffee} onAddToCart={handleAddItemToCart} />
             </li>
           ))}
         </ul>

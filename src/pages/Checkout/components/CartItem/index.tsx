@@ -3,7 +3,7 @@ import { InputNumber } from '../../../../components/InputNumber'
 import formatValue from '../../../../util/formatValue'
 import { Button, CartItemContainer } from './styles'
 
-interface Coffee {
+interface Item {
   id: string
   price: number
   name: string
@@ -12,13 +12,13 @@ interface Coffee {
 }
 
 interface CartItemProps {
-  coffee: Coffee
+  item: Item
   onRemoveItem: (id: string) => void
   onAmountChange: (id: string, value: number) => void
 }
 
 export function CartItem({
-  coffee,
+  item,
   onRemoveItem,
   onAmountChange,
 }: CartItemProps) {
@@ -32,21 +32,21 @@ export function CartItem({
 
   return (
     <CartItemContainer>
-      <img src={coffee.image} alt={coffee.name} />
+      <img src={item.image} alt={item.name} />
       <div>
-        <h4>{coffee.name}</h4>
+        <h4>{item.name}</h4>
         <div>
           <InputNumber
-            onChange={(value) => handleAmountChange(coffee.id, value)}
-            value={coffee.amount}
+            onChange={(value) => handleAmountChange(item.id, value)}
+            value={item.amount}
           />
-          <Button type="button" onClick={() => handleRemoveItem(coffee.id)}>
+          <Button type="button" onClick={() => handleRemoveItem(item.id)}>
             <Trash size={16} />
             Remover
           </Button>
         </div>
       </div>
-      <label>R$ {formatValue(coffee.price)}</label>
+      <label>R$ {formatValue(item.price)}</label>
     </CartItemContainer>
   )
 }

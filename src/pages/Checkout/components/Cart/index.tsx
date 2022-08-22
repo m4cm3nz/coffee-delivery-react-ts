@@ -15,7 +15,7 @@ export function Cart() {
           {items.map((item: Item) => (
             <CartItem
               key={item.id}
-              coffee={item}
+              item={item}
               onRemoveItem={removeItem}
               onAmountChange={updateItemAmount}
             />

@@ -6,7 +6,7 @@ import formatValue from '../../../../util/formatValue'
 
 import { MenuItemContainer, Header, Footer, Section } from './styles'
 
-interface Coffee {
+interface Item {
   id: string
   price: number
   name: string
@@ -24,16 +24,16 @@ interface CartItem {
 }
 
 interface MenuItemProps {
-  coffee: Coffee
+  item: Item
   onAddToCart: (item: CartItem) => void
 }
 
-export function MenuItem({ coffee, onAddToCart }: MenuItemProps) {
+export function MenuItem({ item, onAddToCart }: MenuItemProps) {
   const [cartItem, setCartItem] = useState({
-    id: coffee.id,
-    price: coffee.price,
-    name: coffee.name,
-    image: coffee.image,
+    id: item.id,
+    price: item.price,
+    name: item.name,
+    image: item.image,
     amount: 0,
   })
 
@@ -45,21 +45,21 @@ export function MenuItem({ coffee, onAddToCart }: MenuItemProps) {
     setCartItem({ ...cartItem, amount: value })
   }
 
-  const formattedPrice = formatValue(coffee.price)
+  const formattedPrice = formatValue(item.price)
 
   return (
     <MenuItemContainer>
       <Header>
-        <img src={coffee.image} alt={coffee.name} />
+        <img src={item.image} alt={item.name} />
         <section>
-          {coffee.tags.map((tag) => (
+          {item.tags.map((tag) => (
             <span key={tag}>{tag}</span>
           ))}
         </section>
       </Header>
       <Section>
-        <span>{coffee.name}</span>
-        <p>{coffee.description}</p>
+        <span>{item.name}</span>
+        <p>{item.description}</p>
       </Section>
       <Footer>
         <span>
