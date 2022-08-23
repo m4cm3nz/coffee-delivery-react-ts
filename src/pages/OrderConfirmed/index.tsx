@@ -2,9 +2,13 @@ import { MapPin, Timer } from 'phosphor-react'
 import { defaultTheme } from '../../styles/themes/default'
 import { Bullet, BulletContainer, Container, OrderInfo } from './styles'
 import delivery from '../../assets/delivery.svg'
+import { useContext } from 'react'
+import { CartContext, PaymentMethods } from '../../contexts/CartContext'
 
 export function OrderConfirmed() {
   const theme = defaultTheme
+
+  const { paymentMethod, deliveryAddress } = useContext(CartContext)
 
   return (
     <Container>
@@ -18,9 +22,7 @@ export function OrderConfirmed() {
             </span>
             <div>
               Entrega em
-              <strong>
-                Rua João Daniel Martinelli, 102 Farrapos - Porto Alegre, RS
-              </strong>
+              <strong>{deliveryAddress}</strong>
             </div>
           </Bullet>
           <Bullet>
@@ -38,7 +40,7 @@ export function OrderConfirmed() {
             </span>
             <div>
               Pagamento na entrega
-              <strong>Cartão de Crédito</strong>
+              <strong>{PaymentMethods[paymentMethod!]}</strong>
             </div>
           </Bullet>
         </BulletContainer>

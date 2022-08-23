@@ -34,11 +34,10 @@ export function Checkout() {
     },
   })
 
-  const { handleSubmit, reset } = checkoutFrom
+  const { handleSubmit } = checkoutFrom
 
   function handleCheckout(data: CheckoutFromData) {
     confirmCheckout(data)
-    reset()
   }
 
   return (

@@ -5,6 +5,7 @@ import {
   useReducer,
   useState,
 } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   addNewItemAction,
   removeItemAction,
@@ -20,7 +21,7 @@ export interface Item {
   amount: number
 }
 
-interface ConfirmCheckout {
+interface Address {
   cep: string
   street: string
   number: string
@@ -30,7 +31,13 @@ interface ConfirmCheckout {
   state: string
 }
 
-export type PaymentMethodType = 'credit' | 'debit' | 'cash'
+export const PaymentMethods = {
+  credit: 'Cartão de Crédito',
+  debit: 'Cartão de Débito',
+  cash: 'Dinheiro',
+} as const
+
+export type PaymentMethodKeys = keyof typeof PaymentMethods
 
 interface CartContextType {
   items: Item[]
@@ -38,12 +45,13 @@ interface CartContextType {
   subTotal: number
   deliveryTax: number
   total: number
-  paymentMethod: PaymentMethodType | undefined
+  paymentMethod: PaymentMethodKeys | undefined
+  deliveryAddress: string | undefined
   addItem: (item: Item) => void
   removeItem: (id: string) => void
   updateItemAmount: (id: string, value: number) => void
-  selectPaymentMethod: (type: PaymentMethodType) => void
-  confirmCheckout: (data: ConfirmCheckout) => void
+  selectPaymentMethod: (type: PaymentMethodKeys) => void
+  confirmCheckout: (data: Address) => void
 }
 
 export const CartContext = createContext({} as CartContextType)
@@ -64,16 +72,16 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     return storedStateAsJson ? JSON.parse(storedStateAsJson) : noItemsCartState
   })
 
-  const [paymentMethod, setPaymentMethod] = useState<
-    PaymentMethodType | undefined
-  >()
-
   useEffect(() => {
     const stateJSON = JSON.stringify(cartState)
     localStorage.setItem('@coffee-delivery:cart-state', stateJSON)
   }, [cartState])
 
   const { items } = cartState
+
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodKeys>()
+
+  const [address, setAddress] = useState<Address>()
 
   function addItem(item: Item) {
     dispach(addNewItemAction(item))
@@ -87,13 +95,31 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     dispach(updateItemAmountAction(id, value))
   }
 
-  function confirmCheckout(data: ConfirmCheckout) {
+  const navigate = useNavigate()
+
+  function confirmCheckout(data: Address) {
+    setAddress(data)
     console.log(data)
     console.log(paymentMethod)
+    console.log(items)
+    navigate('/order-confirmed')
   }
 
-  function selectPaymentMethod(type: PaymentMethodType) {
+  function selectPaymentMethod(type: PaymentMethodKeys) {
     setPaymentMethod(type)
+  }
+
+  function getDeliveryAddress(address: Address | undefined) {
+    if (address) {
+      const { street, number, cep, city, neighborhood, complement, state } =
+        address
+
+      return `${
+        complement
+          ? `${street}, ${number}, ${complement}`
+          : `${street}, ${number}`
+      } - ${cep} - ${neighborhood} - ${city}, ${state}`
+    }
   }
 
   const itemsCount = items.length
@@ -110,6 +136,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   const deliveryTax = 3.5
   const total = subTotal + deliveryTax
 
+  const deliveryAddress = getDeliveryAddress(address)
+
   return (
     <CartContext.Provider
       value={{
@@ -119,6 +147,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         deliveryTax,
         total,
         paymentMethod,
+        deliveryAddress,
         addItem,
         removeItem,
         updateItemAmount,

@@ -3,19 +3,21 @@ import { MouseEvent, useContext } from 'react'
 
 import {
   CartContext,
-  PaymentMethodType,
+  PaymentMethodKeys,
+  PaymentMethods,
 } from '../../../../contexts/CartContext'
 import { Button, SectionContainer } from './styles'
 
 export function PaymentMethod() {
-  const { selectPaymentMethod, paymentMethod } = useContext(CartContext)
+  const { selectPaymentMethod, paymentMethod: selectedPaymentMethod } =
+    useContext(CartContext)
 
-  const credit = paymentMethod === 'credit'
-  const debit = paymentMethod === 'debit'
-  const cash = paymentMethod === 'cash'
+  const credit = selectedPaymentMethod === 'credit'
+  const debit = selectedPaymentMethod === 'debit'
+  const cash = selectedPaymentMethod === 'cash'
 
   function handleSelectPaymentMethod(event: MouseEvent<HTMLButtonElement>) {
-    selectPaymentMethod(event.currentTarget.id as PaymentMethodType)
+    selectPaymentMethod(event.currentTarget.id as PaymentMethodKeys)
   }
 
   return (
