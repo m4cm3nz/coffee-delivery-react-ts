@@ -1,9 +1,17 @@
 import { MapPin } from 'phosphor-react'
+import { FormEvent, useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { Input, SectionContainer } from './styles'
 
 export function AddressInfo() {
   const { register } = useFormContext()
+
+  const handleCEPKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
+    e.currentTarget.maxLength = 10
+    e.currentTarget.value = e.currentTarget.value
+      .replace(/\D/g, '')
+      .replace(/^(\d{2})(\d{3})(\d)/, '$1.$2-$3')
+  }, [])
 
   return (
     <SectionContainer>
@@ -16,12 +24,12 @@ export function AddressInfo() {
       </header>
       <fieldset>
         <Input
-          id="cep"
+          id="postal-code"
           type="text"
-          maxLength={8}
-          placeholder="CEP"
-          title="cep"
-          {...register('cep')}
+          placeholder="Código Postal"
+          title="código postal"
+          onKeyUp={handleCEPKeyUp}
+          {...register('postalCode')}
         />
         <Input
           id="street"
@@ -69,7 +77,7 @@ export function AddressInfo() {
           <Input
             id="state"
             type="text"
-            maxLength={20}
+            maxLength={2}
             placeholder="UF"
             title="estado"
             {...register('state')}

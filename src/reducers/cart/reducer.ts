@@ -26,7 +26,10 @@ export function cartReducer(state: CartState, action: any) {
         )
         draft.items[index].amount = action.payload.value
       })
-
+    case ActionTypes.CLEAR_ITEMS:
+      return produce(state, (draft) => {
+        draft.items = []
+      })
     default:
       return state
   }

@@ -9,7 +9,7 @@ import { useContext } from 'react'
 import { CartContext } from '../../contexts/CartContext'
 
 const checkoutValidationSchema = zod.object({
-  cep: zod.string().min(8, 'Preencha o cep').max(8),
+  postalCode: zod.string().min(10, 'Preencha o código postal').max(10),
   street: zod.string().min(5).max(120),
   number: zod.string().min(1).max(20),
   neighborhood: zod.string().min(5).max(60),
@@ -25,7 +25,7 @@ export function Checkout() {
   const checkoutFrom = useForm<CheckoutFromData>({
     resolver: zodResolver(checkoutValidationSchema),
     defaultValues: {
-      cep: '',
+      postalCode: '',
       street: '',
       number: '',
       neighborhood: '',

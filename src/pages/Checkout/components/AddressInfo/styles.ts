@@ -53,6 +53,25 @@ export const SectionContainer = styled.section`
       gap: 1rem;
     }
   }
+
+  #postal-code {
+    width: 10.8rem;
+  }
+
+  #number {
+    flex: 0;
+    width: 10.8rem;
+  }
+
+  #neighborhood {
+    flex: 0;
+    width: 10.8rem;
+  }
+
+  #state {
+    flex: 0;
+    width: 4rem;
+  }
 `
 
 export const Input = styled.input`

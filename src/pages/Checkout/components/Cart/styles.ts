@@ -61,7 +61,11 @@ export const Button = styled.button`
 
   line-height: 160%;
 
-  :hover {
+  :disabled {
+    background: ${(props) => props.theme['yelloW-light']};
+  }
+
+  :not(:disabled):hover {
     background: ${(props) => props.theme['yellow-dark']};
     cursor: pointer;
   }

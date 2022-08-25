@@ -8,6 +8,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import {
   addNewItemAction,
+  clearItemsAction,
   removeItemAction,
   updateItemAmountAction,
 } from '../reducers/cart/actions'
@@ -22,7 +23,7 @@ export interface Item {
 }
 
 interface Address {
-  cep: string
+  postalCode: string
   street: string
   number: string
   complement?: string
@@ -99,10 +100,15 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
 
   function confirmCheckout(data: Address) {
     setAddress(data)
+
     console.log(data)
     console.log(paymentMethod)
     console.log(items)
+
     navigate('/order-confirmed')
+
+    dispach(clearItemsAction())
+    setPaymentMethod(undefined)
   }
 
   function selectPaymentMethod(type: PaymentMethodKeys) {
@@ -111,14 +117,21 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
 
   function getDeliveryAddress(address: Address | undefined) {
     if (address) {
-      const { street, number, cep, city, neighborhood, complement, state } =
-        address
+      const {
+        street,
+        number,
+        postalCode,
+        city,
+        neighborhood,
+        complement,
+        state,
+      } = address
 
       return `${
         complement
           ? `${street}, ${number}, ${complement}`
           : `${street}, ${number}`
-      } - ${cep} - ${neighborhood} - ${city}, ${state}`
+      } - ${postalCode} - ${neighborhood} - ${city}, ${state}`
     }
   }
 
