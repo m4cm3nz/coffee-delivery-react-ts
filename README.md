@@ -1,4 +1,4 @@
-# coffee.delivery
+# Coffee Delivery
 
 Desafio Rocketseat Ignite  
 Aplicação para gerenciar um carrinho de compras de uma cafeteria fictícia  
