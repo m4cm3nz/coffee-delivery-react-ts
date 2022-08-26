@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { CartContext, Item } from '../../../../contexts/CartContext'
+import formatValue from '../../../../util/formatValue'
 
 import { CartItem } from '../CartItem'
 import { Button, CartContainer } from './styles'
@@ -35,15 +36,15 @@ export function Cart() {
       <footer>
         <div>
           <label>Total de itens</label>
-          <label>R$ {subTotal}</label>
+          <label>R$ {formatValue(subTotal)}</label>
         </div>
         <div>
           <label>Entrega</label>
-          <label>R$ {deliveryTax}</label>
+          <label>R$ {formatValue(deliveryTax)}</label>
         </div>
         <div>
           <strong>Total</strong>
-          <strong>R$ {total}</strong>
+          <strong>R$ {formatValue(total)}</strong>
         </div>
         <Button type="submit" disabled={requireUserInteraction}>
           Confirmar Pedido

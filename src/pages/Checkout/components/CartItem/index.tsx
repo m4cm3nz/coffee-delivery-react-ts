@@ -1,4 +1,5 @@
 import { Trash } from 'phosphor-react'
+import { FormEvent } from 'react'
 import { InputNumber } from '../../../../components/InputNumber'
 import formatValue from '../../../../util/formatValue'
 import { Button, CartItemContainer } from './styles'
@@ -30,6 +31,19 @@ export function CartItem({
     onRemoveItem(id)
   }
 
+  function handleInputAmount(event: FormEvent<HTMLInputElement>) {
+    const { value, maxLength, minLength } = event.currentTarget
+
+    if (value.length > maxLength)
+      event.currentTarget.value = value.slice(0, maxLength)
+
+    if (
+      event.currentTarget.value.length < minLength ||
+      event.currentTarget.valueAsNumber < minLength
+    )
+      event.currentTarget.value = minLength.toString()
+  }
+
   return (
     <CartItemContainer>
       <img src={item.image} alt={item.name} />
@@ -37,7 +51,14 @@ export function CartItem({
         <h4>{item.name}</h4>
         <div>
           <InputNumber
-            onChange={(value) => handleAmountChange(item.id, value)}
+            onInput={handleInputAmount}
+            onValueChange={(value) => handleAmountChange(item.id, value)}
+            placeholder="1"
+            step={1}
+            min={1}
+            max={9}
+            maxLength={1}
+            minLength={1}
             value={item.amount}
           />
           <Button type="button" onClick={() => handleRemoveItem(item.id)}>

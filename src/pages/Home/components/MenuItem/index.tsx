@@ -1,5 +1,5 @@
 import { ShoppingCart } from 'phosphor-react'
-import { useState } from 'react'
+import { FormEvent, useCallback, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { InputNumber } from '../../../../components/InputNumber'
 import formatValue from '../../../../util/formatValue'
@@ -34,7 +34,7 @@ export function MenuItem({ item, onAddToCart }: MenuItemProps) {
     price: item.price,
     name: item.name,
     image: item.image,
-    amount: 0,
+    amount: 1,
   })
 
   function handleAddToCart() {
@@ -43,6 +43,19 @@ export function MenuItem({ item, onAddToCart }: MenuItemProps) {
 
   function handleAmountChange(value: number) {
     setCartItem({ ...cartItem, amount: value })
+  }
+
+  function handleInputAmount(event: FormEvent<HTMLInputElement>) {
+    const { value, maxLength, minLength } = event.currentTarget
+
+    if (value.length > maxLength)
+      event.currentTarget.value = value.slice(0, maxLength)
+
+    if (
+      event.currentTarget.value.length < minLength ||
+      event.currentTarget.valueAsNumber < minLength
+    )
+      event.currentTarget.value = minLength.toString()
   }
 
   const formattedPrice = formatValue(item.price)
@@ -65,7 +78,17 @@ export function MenuItem({ item, onAddToCart }: MenuItemProps) {
         <span>
           <small>R$</small> <strong>{formattedPrice}</strong>
         </span>
-        <InputNumber onChange={handleAmountChange} value={0} />
+        <InputNumber
+          onValueChange={handleAmountChange}
+          onInput={handleInputAmount}
+          placeholder="1"
+          step={1}
+          min={1}
+          max={9}
+          maxLength={1}
+          minLength={1}
+          value={1}
+        />
         <NavLink to="/checkout" title="checkout" onClick={handleAddToCart}>
           <ShoppingCart size={22} weight="fill" />
         </NavLink>

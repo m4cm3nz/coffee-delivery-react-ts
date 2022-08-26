@@ -109,9 +109,9 @@ export const Footer = styled.footer`
 
     color: ${(props) => props.theme.white};
     background: ${(props) => props.theme['purple-dark']};
-  }
 
-  a:hover {
-    background: ${(props) => props.theme.purple};
+    :hover {
+      background: ${(props) => props.theme.purple};
+    }
   }
 `
