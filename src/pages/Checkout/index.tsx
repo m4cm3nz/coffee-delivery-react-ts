@@ -1,64 +1,51 @@
-import { FormProvider, useForm } from 'react-hook-form'
-import { AddressInfo } from './components/AddressInfo'
-import { Cart } from './components/Cart'
-import { PaymentMethod } from './components/PaymentMethod'
-import { CheckoutContainer } from './styles'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as zod from 'zod'
+import { MapPin, Timer } from 'phosphor-react'
+import { defaultTheme } from '../../styles/themes/default'
+import { Bullet, BulletContainer, Container, OrderInfo } from './styles'
+import deliveryImage from '../../assets/delivery.svg'
 import { useContext } from 'react'
-import { CartContext } from '../../contexts/CartContext'
-
-const checkoutValidationSchema = zod.object({
-  postalCode: zod.string().min(10, 'Preencha o código postal').max(10),
-  street: zod.string().min(5).max(120),
-  number: zod.string().min(1).max(20),
-  neighborhood: zod.string().min(5).max(60),
-  city: zod.string().min(5).max(60),
-  state: zod.string().min(2).max(20),
-})
-
-type CheckoutFromData = zod.infer<typeof checkoutValidationSchema>
+import { OrderContext } from '../../contexts/CartContext'
 
 export function Checkout() {
-  const { confirmCheckout } = useContext(CartContext)
+  const theme = defaultTheme
 
-  const checkoutFrom = useForm<CheckoutFromData>({
-    resolver: zodResolver(checkoutValidationSchema),
-    defaultValues: {
-      postalCode: '',
-      street: '',
-      number: '',
-      neighborhood: '',
-      city: '',
-      state: '',
-    },
-  })
-
-  const { handleSubmit } = checkoutFrom
-
-  function handleCheckout(data: CheckoutFromData) {
-    confirmCheckout(data)
-  }
+  const { delivery } = useContext(OrderContext)
 
   return (
-    <CheckoutContainer>
-      <form onSubmit={handleSubmit(handleCheckout)} action="">
-        <main>
-          <header>
-            <h4>Complete seu pedido</h4>
-          </header>
-          <FormProvider {...checkoutFrom}>
-            <AddressInfo />
-            <PaymentMethod />
-          </FormProvider>
-        </main>
-        <aside>
-          <header>
-            <h4>Cafés selecionados</h4>
-          </header>
-          <Cart />
-        </aside>
-      </form>
-    </CheckoutContainer>
+    <Container>
+      <OrderInfo>
+        <h3>Uhu! Pedido confirmado</h3>
+        <p>Agora é só aguardar que logo o café chegará até você</p>
+        <BulletContainer>
+          <Bullet>
+            <span style={{ background: theme.purple }}>
+              <MapPin size={16} weight="fill" />
+            </span>
+            <div>
+              Entrega em
+              <strong>{delivery.address}</strong>
+            </div>
+          </Bullet>
+          <Bullet>
+            <span style={{ background: theme.yellow }}>
+              <Timer size={16} weight="fill" />
+            </span>
+            <div>
+              Previsão de entrega
+              <strong>20 min - 30 min</strong>
+            </div>
+          </Bullet>
+          <Bullet>
+            <span style={{ background: theme['yellow-dark'] }}>
+              <MapPin size={16} weight="fill" />
+            </span>
+            <div>
+              Pagamento na entrega
+              <strong>{delivery.paymentMethod}</strong>
+            </div>
+          </Bullet>
+        </BulletContainer>
+      </OrderInfo>
+      <img src={deliveryImage} alt="um lindo copo de café"></img>
+    </Container>
   )
 }

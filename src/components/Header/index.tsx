@@ -4,10 +4,10 @@ import logo from '../../assets/logo.svg'
 import { MapPin, ShoppingCart } from 'phosphor-react'
 import { Link, NavLink } from 'react-router-dom'
 import { useContext } from 'react'
-import { CartContext } from '../../contexts/CartContext'
+import { OrderContext } from '../../contexts/CartContext'
 
 export function Header() {
-  const { itemsCount } = useContext(CartContext)
+  const { itemsCount } = useContext(OrderContext)
   const showItemsCountTag = itemsCount > 0
 
   return (

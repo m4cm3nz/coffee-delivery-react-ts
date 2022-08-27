@@ -2,15 +2,14 @@ import { Bank, CreditCard, CurrencyDollar, Money } from 'phosphor-react'
 import { MouseEvent, useContext } from 'react'
 
 import {
-  CartContext,
+  OrderContext,
   PaymentMethodKeys,
-  PaymentMethods,
 } from '../../../../contexts/CartContext'
 import { Button, SectionContainer } from './styles'
 
 export function PaymentMethod() {
   const { selectPaymentMethod, paymentMethod: selectedPaymentMethod } =
-    useContext(CartContext)
+    useContext(OrderContext)
 
   const credit = selectedPaymentMethod === 'credit'
   const debit = selectedPaymentMethod === 'debit'

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { CartContext, Item } from '../../../../contexts/CartContext'
+import { OrderContext, Item } from '../../../../contexts/CartContext'
 import formatValue from '../../../../util/formatValue'
 
 import { CartItem } from '../CartItem'
@@ -14,7 +14,7 @@ export function Cart() {
     paymentMethod,
     removeItem,
     updateItemAmount,
-  } = useContext(CartContext)
+  } = useContext(OrderContext)
 
   const requireUserInteraction =
     paymentMethod === undefined || items.length === 0

@@ -57,16 +57,16 @@ interface CartContextType {
   removeItem: (id: string) => void
   updateItemAmount: (id: string, value: number) => void
   selectPaymentMethod: (type: PaymentMethodKeys) => void
-  confirmCheckout: (data: Address) => void
+  confirmOrder: (data: Address) => void
 }
 
-export const CartContext = createContext({} as CartContextType)
+export const OrderContext = createContext({} as CartContextType)
 
 interface CartContextProviderProps {
   children: ReactNode
 }
 
-export function CartContextProvider({ children }: CartContextProviderProps) {
+export function OrderContextProvider({ children }: CartContextProviderProps) {
   const noItemsCartState = {
     items: [],
   }
@@ -106,13 +106,13 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
 
   const navigate = useNavigate()
 
-  function confirmCheckout(data: Address) {
+  function confirmOrder(data: Address) {
     setDelivery({
       paymentMethod: PaymentMethods[paymentMethod!],
       address: getDeliveryAddress(data)!,
     })
 
-    navigate('/order-confirmed')
+    navigate('/checkout')
 
     dispach(clearItemsAction())
     setPaymentMethod(undefined)
@@ -157,7 +157,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   const total = subTotal + deliveryTax
 
   return (
-    <CartContext.Provider
+    <OrderContext.Provider
       value={{
         items,
         itemsCount,
@@ -170,10 +170,10 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         removeItem,
         updateItemAmount,
         selectPaymentMethod,
-        confirmCheckout,
+        confirmOrder,
       }}
     >
       {children}
-    </CartContext.Provider>
+    </OrderContext.Provider>
   )
 }

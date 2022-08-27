@@ -4,16 +4,15 @@ import { defaultTheme } from '../../styles/themes/default'
 import home from '../../assets/home.svg'
 import { MenuItem } from './components/MenuItem'
 import { coffeeMenu } from '../../data/coffeeMenu'
-import { CartContext, Item } from '../../contexts/CartContext'
+import { OrderContext, Item } from '../../contexts/CartContext'
 import { useContext } from 'react'
 
 export function Home() {
   const theme = defaultTheme
 
-  const { addItem } = useContext(CartContext)
+  const { addItem } = useContext(OrderContext)
 
   function handleAddItemToCart(item: Item) {
-    console.log(item)
     addItem(item)
   }
 
