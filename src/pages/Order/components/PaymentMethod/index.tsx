@@ -4,7 +4,7 @@ import { MouseEvent, useContext } from 'react'
 import {
   OrderContext,
   PaymentMethodKeys,
-} from '../../../../contexts/CartContext'
+} from '../../../../contexts/OrderContext'
 import { Button, SectionContainer } from './styles'
 
 export function PaymentMethod() {

@@ -45,7 +45,7 @@ interface Delivery {
   paymentMethod: string
 }
 
-interface CartContextType {
+interface OrderContextType {
   items: Item[]
   itemsCount: number
   paymentMethod: PaymentMethodKeys | undefined
@@ -60,13 +60,13 @@ interface CartContextType {
   confirmOrder: (data: Address) => void
 }
 
-export const OrderContext = createContext({} as CartContextType)
+export const OrderContext = createContext({} as OrderContextType)
 
-interface CartContextProviderProps {
+interface OrderContextProviderProps {
   children: ReactNode
 }
 
-export function OrderContextProvider({ children }: CartContextProviderProps) {
+export function OrderContextProvider({ children }: OrderContextProviderProps) {
   const noItemsCartState = {
     items: [],
   }
@@ -79,11 +79,13 @@ export function OrderContextProvider({ children }: CartContextProviderProps) {
   })
 
   useEffect(() => {
-    const stateJSON = JSON.stringify(cartState)
-    localStorage.setItem('@coffee-delivery:cart-state', stateJSON)
+    localStorage.setItem(
+      '@coffee-delivery:cart-state',
+      JSON.stringify(cartState),
+    )
   }, [cartState])
 
-  const { items } = cartState
+  const { items, itemsCount, subTotal, deliveryTax, total } = cartState
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodKeys>()
 
@@ -106,10 +108,10 @@ export function OrderContextProvider({ children }: CartContextProviderProps) {
 
   const navigate = useNavigate()
 
-  function confirmOrder(data: Address) {
+  function confirmOrder(address: Address) {
     setDelivery({
       paymentMethod: PaymentMethods[paymentMethod!],
-      address: getDeliveryAddress(data)!,
+      address: getDeliveryAddress(address)!,
     })
 
     navigate('/checkout')
@@ -141,20 +143,6 @@ export function OrderContextProvider({ children }: CartContextProviderProps) {
       } - ${postalCode} - ${neighborhood} - ${city}, ${state}`
     }
   }
-
-  const itemsCount = items.length
-
-  const subTotal =
-    itemsCount > 0
-      ? items
-          .map((item) => item.amount * item.price)
-          .reduce((previous, current) => {
-            return previous + current
-          })
-      : 0
-
-  const deliveryTax = 3.5
-  const total = subTotal + deliveryTax
 
   return (
     <OrderContext.Provider

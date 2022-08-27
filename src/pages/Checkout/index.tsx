@@ -3,7 +3,7 @@ import { defaultTheme } from '../../styles/themes/default'
 import { Bullet, BulletContainer, Container, OrderInfo } from './styles'
 import deliveryImage from '../../assets/delivery.svg'
 import { useContext } from 'react'
-import { OrderContext } from '../../contexts/CartContext'
+import { OrderContext } from '../../contexts/OrderContext'
 
 export function Checkout() {
   const theme = defaultTheme

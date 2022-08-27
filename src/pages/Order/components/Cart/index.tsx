@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { OrderContext, Item } from '../../../../contexts/CartContext'
+import { OrderContext, Item } from '../../../../contexts/OrderContext'
 import formatValue from '../../../../util/formatValue'
 
 import { CartItem } from '../CartItem'

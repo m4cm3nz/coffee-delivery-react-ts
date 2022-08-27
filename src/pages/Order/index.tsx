@@ -6,7 +6,7 @@ import { OrderContainer } from './styles'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useContext } from 'react'
-import { OrderContext } from '../../contexts/CartContext'
+import { OrderContext } from '../../contexts/OrderContext'
 
 const addressValidationSchema = zod.object({
   postalCode: zod.string().min(10, 'Preencha o código postal').max(10),

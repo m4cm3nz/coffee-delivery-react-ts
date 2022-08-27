@@ -4,7 +4,7 @@ import logo from '../../assets/logo.svg'
 import { MapPin, ShoppingCart } from 'phosphor-react'
 import { Link, NavLink } from 'react-router-dom'
 import { useContext } from 'react'
-import { OrderContext } from '../../contexts/CartContext'
+import { OrderContext } from '../../contexts/OrderContext'
 
 export function Header() {
   const { itemsCount } = useContext(OrderContext)
@@ -22,7 +22,7 @@ export function Header() {
             Porto Alegre-RS
           </Localization>
           <CheckoutButton>
-            <NavLink to="/checkout" title="checkout">
+            <NavLink to="/order" title="my cart">
               <ShoppingCart size={22} weight="fill" />
             </NavLink>
             {showItemsCountTag && <small>{itemsCount}</small>}

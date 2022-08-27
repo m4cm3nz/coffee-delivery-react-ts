@@ -1,4 +1,4 @@
-import { Item } from '../../contexts/CartContext'
+import { Item } from '../../contexts/OrderContext'
 
 export enum ActionTypes {
   ADD_NEW_ITEM = 'ADD_NEW_ITEM',

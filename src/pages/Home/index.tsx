@@ -4,7 +4,7 @@ import { defaultTheme } from '../../styles/themes/default'
 import home from '../../assets/home.svg'
 import { MenuItem } from './components/MenuItem'
 import { coffeeMenu } from '../../data/coffeeMenu'
-import { OrderContext, Item } from '../../contexts/CartContext'
+import { OrderContext, Item } from '../../contexts/OrderContext'
 import { useContext } from 'react'
 
 export function Home() {
