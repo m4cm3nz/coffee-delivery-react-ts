@@ -89,7 +89,7 @@ export function MenuItem({ item, onAddToCart }: MenuItemProps) {
           minLength={1}
           value={1}
         />
-        <NavLink to="/checkout" title="checkout" onClick={handleAddToCart}>
+        <NavLink to="/checkout" title="add to cart" onClick={handleAddToCart}>
           <ShoppingCart size={22} weight="fill" />
         </NavLink>
       </Footer>

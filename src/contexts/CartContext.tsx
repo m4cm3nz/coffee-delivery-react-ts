@@ -40,14 +40,19 @@ export const PaymentMethods = {
 
 export type PaymentMethodKeys = keyof typeof PaymentMethods
 
+interface Delivery {
+  address: string
+  paymentMethod: string
+}
+
 interface CartContextType {
   items: Item[]
   itemsCount: number
+  paymentMethod: PaymentMethodKeys | undefined
   subTotal: number
   deliveryTax: number
   total: number
-  paymentMethod: PaymentMethodKeys | undefined
-  deliveryAddress: string | undefined
+  delivery: Delivery
   addItem: (item: Item) => void
   removeItem: (id: string) => void
   updateItemAmount: (id: string, value: number) => void
@@ -82,7 +87,10 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodKeys>()
 
-  const [address, setAddress] = useState<Address>()
+  const [delivery, setDelivery] = useState<Delivery>({
+    paymentMethod: '',
+    address: '',
+  })
 
   function addItem(item: Item) {
     dispach(addNewItemAction(item))
@@ -99,11 +107,10 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   const navigate = useNavigate()
 
   function confirmCheckout(data: Address) {
-    setAddress(data)
-
-    console.log(data)
-    console.log(paymentMethod)
-    console.log(items)
+    setDelivery({
+      paymentMethod: PaymentMethods[paymentMethod!],
+      address: getDeliveryAddress(data)!,
+    })
 
     navigate('/order-confirmed')
 
@@ -149,18 +156,16 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   const deliveryTax = 3.5
   const total = subTotal + deliveryTax
 
-  const deliveryAddress = getDeliveryAddress(address)
-
   return (
     <CartContext.Provider
       value={{
         items,
         itemsCount,
+        paymentMethod,
         subTotal,
         deliveryTax,
         total,
-        paymentMethod,
-        deliveryAddress,
+        delivery,
         addItem,
         removeItem,
         updateItemAmount,
