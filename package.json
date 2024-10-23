@@ -10,25 +10,25 @@
     "lint": "eslint src --ext .ts,.tsx --fix"
   },
   "dependencies": {
-    "@hookform/resolvers": "^2.9.7",
-    "immer": "^9.0.15",
+    "@hookform/resolvers": "^2.9.11",
+    "immer": "^9.0.21",
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.34.0",
-    "react-router-dom": "^6.3.0",
-    "styled-components": "^5.3.5",
+    "react-hook-form": "^7.45.4",
+    "react-router-dom": "^6.14.2",
+    "styled-components": "^5.3.11",
     "uuid": "^8.3.2",
-    "zod": "^3.18.0"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@rocketseat/eslint-config": "^1.1.3",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "@types/styled-components": "^5.1.25",
+    "@rocketseat/eslint-config": "^1.3.0",
+    "@types/react": "^18.2.19",
+    "@types/react-dom": "^18.2.7",
+    "@types/styled-components": "^5.1.26",
     "@types/uuid": "^8.3.4",
-    "@vitejs/plugin-react": "^2.0.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.0.0"
+    "@vitejs/plugin-react": "^2.2.0",
+    "typescript": "^4.9.5",
+    "vite": "^3.2.7"
   }
 }
