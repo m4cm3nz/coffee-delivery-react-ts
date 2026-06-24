@@ -25,7 +25,10 @@ body::-webkit-scrollbar {
  
 :focus {
     outline: 0;
-    box-shadow: 0 0 0 2px ${(props) => props.theme.white};
+}
+
+:focus-visible {
+    box-shadow: 0 0 0 2px ${(props) => props.theme['yellow-dark']};
 }
 
 ::selection{

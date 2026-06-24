@@ -1,11 +1,11 @@
 import { Item } from '../../contexts/OrderContext'
 
-export enum ActionTypes {
-  ADD_NEW_ITEM = 'ADD_NEW_ITEM',
-  REMOVE_ITEM = 'REMOVE_ITEM',
-  UPDATE_AMOUNT = 'UPDATE_AMOUNT',
-  CLEAR_ITEMS = 'CLEAR_ITEMS',
-}
+export const ActionTypes = {
+  ADD_NEW_ITEM: 'ADD_NEW_ITEM',
+  REMOVE_ITEM: 'REMOVE_ITEM',
+  UPDATE_AMOUNT: 'UPDATE_AMOUNT',
+  CLEAR_ITEMS: 'CLEAR_ITEMS',
+} as const
 
 export function addNewItemAction(newItem: Item) {
   return {
