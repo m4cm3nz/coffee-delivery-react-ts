@@ -32,7 +32,7 @@ export function MenuItem({ item, onAddToCart }: MenuItemProps) {
   return (
     <MenuItemContainer>
       <Header>
-        <img src={item.image} alt={item.name} />
+        <img src={item.image} alt={item.name} loading="lazy" />
         <section>
           {item.tags.map((tag) => (
             <span key={tag}>{tag}</span>

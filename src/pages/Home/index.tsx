@@ -7,7 +7,7 @@ import {
   Menu,
 } from './styles'
 import { Coffee, Package, ShoppingCart, Timer } from '@phosphor-icons/react'
-import home from '../../assets/home.svg'
+import home from '../../assets/home.webp'
 import { MenuItem } from './components/MenuItem'
 import { coffeeMenu } from '../../data/coffeeMenu'
 import { OrderContext, Item } from '../../contexts/OrderContext'

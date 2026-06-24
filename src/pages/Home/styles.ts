@@ -1,5 +1,5 @@
 import styled, { DefaultTheme } from 'styled-components'
-import background from '../../assets/background.png'
+import background from '../../assets/background.webp'
 
 export const HomeContainer = styled.main`
   display: flex;
