@@ -14,10 +14,22 @@ export const HeaderContainer = styled.header`
 
   background: ${(props) => props.theme.white};
 
+  @media (max-width: 920px) {
+    padding: 0 6%;
+  }
+
+  @media (max-width: 600px) {
+    height: 5rem;
+    padding: 0 1.5rem;
+
+    img {
+      height: 2.25rem;
+    }
+  }
+
   div {
     display: flex;
     width: 100%;
-    /* max-width: 83%; */
     gap: 0.75rem;
   }
 
@@ -36,7 +48,6 @@ export const BaseSpanContainer = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding: 0.5rem; */
   border-radius: 6px;
 `
 
@@ -55,29 +66,31 @@ export const Localization = styled(BaseSpanContainer)`
 `
 
 export const CheckoutButton = styled(BaseSpanContainer)`
+  position: relative;
+
+  background: ${(props) => props.theme['yellow-light']};
+
   a {
+    display: flex;
     padding: 0.5rem;
     height: 2.375rem;
   }
-
-  background: ${(props) => props.theme['yelloW-light']};
 
   svg {
     color: ${(props) => props.theme['yellow-dark']};
   }
 
   small {
-    position: relative;
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
     height: 1.25rem;
     width: 1.25rem;
-
-    margin-right: -1.25rem;
-    top: -1rem;
-    left: -0.3rem;
 
     font-size: 0.75rem;
     font-weight: 700;
