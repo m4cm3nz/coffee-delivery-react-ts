@@ -1,20 +1,81 @@
 import { MapPin } from '@phosphor-icons/react'
-import { FormEvent, useCallback } from 'react'
+import { FormEvent, useCallback, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { ErrorMessage, Field, Input, SectionContainer } from './styles'
+import { fetchAddressByCep, onlyDigits } from '../../../../util/cep'
+import {
+  ErrorMessage,
+  Field,
+  Input,
+  SectionContainer,
+  Status,
+} from './styles'
+
+type CepStatus = 'idle' | 'loading' | 'error'
 
 export function AddressInfo() {
   const {
     register,
+    setValue,
+    setFocus,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useFormContext()
 
-  const handleCEPKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
-    e.currentTarget.maxLength = 10
-    e.currentTarget.value = e.currentTarget.value
-      .replace(/\D/g, '')
-      .replace(/^(\d{2})(\d{3})(\d)/, '$1.$2-$3')
-  }, [])
+  const [cepStatus, setCepStatus] = useState<CepStatus>('idle')
+  const lastLookedUpCep = useRef<string>('')
+
+  const lookupCep = useCallback(
+    async (cep: string) => {
+      setCepStatus('loading')
+
+      try {
+        const address = await fetchAddressByCep(cep)
+
+        if (!address) {
+          setCepStatus('error')
+          setError('postalCode', {
+            type: 'manual',
+            message: 'CEP não encontrado',
+          })
+          return
+        }
+
+        setCepStatus('idle')
+        clearErrors('postalCode')
+        setValue('street', address.street, { shouldValidate: true })
+        setValue('neighborhood', address.neighborhood, { shouldValidate: true })
+        setValue('city', address.city, { shouldValidate: true })
+        setValue('state', address.state, { shouldValidate: true })
+        setFocus('number')
+      } catch {
+        setCepStatus('error')
+        setError('postalCode', {
+          type: 'manual',
+          message: 'Não foi possível buscar o CEP. Tente novamente.',
+        })
+      }
+    },
+    [setValue, setFocus, setError, clearErrors],
+  )
+
+  const handleCEPKeyUp = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      const input = event.currentTarget
+      input.maxLength = 10
+      input.value = onlyDigits(input.value).replace(
+        /^(\d{2})(\d{3})(\d)/,
+        '$1.$2-$3',
+      )
+
+      const digits = onlyDigits(input.value)
+      if (digits.length === 8 && digits !== lastLookedUpCep.current) {
+        lastLookedUpCep.current = digits
+        lookupCep(digits)
+      }
+    },
+    [lookupCep],
+  )
 
   return (
     <SectionContainer>
@@ -31,13 +92,20 @@ export function AddressInfo() {
             <Input
               id="postal-code"
               type="text"
+              inputMode="numeric"
               placeholder="Código Postal"
               aria-label="Código postal"
               $hasError={!!errors.postalCode}
               onKeyUp={handleCEPKeyUp}
               {...register('postalCode')}
             />
-            <ErrorMessage>{errors.postalCode?.message as string}</ErrorMessage>
+            {cepStatus === 'loading' ? (
+              <Status role="status">Buscando endereço…</Status>
+            ) : (
+              <ErrorMessage>
+                {errors.postalCode?.message as string}
+              </ErrorMessage>
+            )}
           </Field>
         </div>
 
@@ -92,7 +160,9 @@ export function AddressInfo() {
               $hasError={!!errors.neighborhood}
               {...register('neighborhood')}
             />
-            <ErrorMessage>{errors.neighborhood?.message as string}</ErrorMessage>
+            <ErrorMessage>
+              {errors.neighborhood?.message as string}
+            </ErrorMessage>
           </Field>
           <Field $grow>
             <Input
