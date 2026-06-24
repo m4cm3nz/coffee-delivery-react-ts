@@ -4,14 +4,19 @@ import { OrderContextProvider } from './contexts/OrderContext'
 import { Router } from './Router'
 import { GlobalStyle } from './styles/global'
 import { defaultTheme } from './styles/themes/default'
+import { ErrorBoundary } from './components/ErrorBoundary'
+import { ScrollToTop } from './components/ScrollToTop'
 
 export function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
-        <OrderContextProvider>
-          <Router />
-        </OrderContextProvider>
+        <ScrollToTop />
+        <ErrorBoundary>
+          <OrderContextProvider>
+            <Router />
+          </OrderContextProvider>
+        </ErrorBoundary>
       </BrowserRouter>
       <GlobalStyle />
     </ThemeProvider>

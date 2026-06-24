@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { Button as BaseButton } from '../../../../components/Button'
 
 export const SectionContainer = styled.section`
   padding: 2.5rem;
@@ -34,21 +33,85 @@ export const SectionContainer = styled.section`
     }
   }
 
+  header > svg {
+    color: ${(props) => props.theme.purple};
+    flex-shrink: 0;
+  }
+`
+
+export const Options = styled.fieldset`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  gap: 0.75rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+`
+
+export const HiddenRadio = styled.input`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+`
+
+interface OptionProps {
+  $selected: boolean
+}
+
+export const Option = styled.label<OptionProps>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  flex: 1 1 12rem;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid
+    ${(props) => (props.$selected ? props.theme.purple : 'transparent')};
+
+  background: ${(props) =>
+    props.$selected
+      ? props.theme['purple-light']
+      : props.theme['base-button']};
+  color: ${(props) => props.theme['base-text']};
+
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  cursor: pointer;
+
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
   svg {
     color: ${(props) => props.theme.purple};
   }
 
-  > div {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
-    gap: 0.75rem;
+  &:hover {
+    background: ${(props) => props.theme['base-hover']};
   }
-`
 
-export const Button = styled(BaseButton).attrs({ $variant: 'secondary' })`
-  flex: 1 1 12rem;
+  &:has(input:focus-visible) {
+    box-shadow: 0 0 0 2px ${(props) => props.theme['yellow-dark']};
+  }
 `

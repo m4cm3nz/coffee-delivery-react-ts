@@ -90,10 +90,15 @@ export function OrderContextProvider({ children }: OrderContextProviderProps) {
   )
 
   useEffect(() => {
-    localStorage.setItem(
-      '@coffee-delivery:cart-state',
-      JSON.stringify(cartState),
-    )
+    try {
+      localStorage.setItem(
+        '@coffee-delivery:cart-state',
+        JSON.stringify(cartState),
+      )
+    } catch {
+      // Storage may be unavailable (private mode, quota exceeded); the cart
+      // still works in-memory for this session.
+    }
   }, [cartState])
 
   const { items, itemsCount, subTotal, deliveryTax, total } = cartState
