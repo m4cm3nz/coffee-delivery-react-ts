@@ -116,7 +116,8 @@ export const SignInLink = styled(NavLink)`
   align-items: center;
   gap: 0.375rem;
 
-  padding: 0.5rem 0.75rem;
+  height: 2.375rem;
+  padding: 0 0.75rem;
   border-radius: 6px;
   white-space: nowrap;
 
@@ -126,21 +127,30 @@ export const SignInLink = styled(NavLink)`
 
   svg {
     color: ${(props) => props.theme.purple};
+    transition: color 0.15s;
   }
 
-  transition: filter 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 
   &:hover {
-    filter: brightness(0.97);
+    background: ${(props) => props.theme.purple};
+    color: ${(props) => props.theme.white};
+
+    svg {
+      color: ${(props) => props.theme.white};
+    }
   }
 `
 
 export const UserArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
 
-  padding: 0.375rem 0.5rem 0.375rem 0.75rem;
+  height: 2.375rem;
+  padding: 0 0.25rem 0 0.75rem;
   border-radius: 6px;
   background: ${(props) => props.theme['base-card']};
 
@@ -163,14 +173,21 @@ export const UserArea = styled.div`
     align-items: center;
     justify-content: center;
 
+    width: 1.875rem;
+    height: 1.875rem;
     border: 0;
+    border-radius: 6px;
+
     background: transparent;
     cursor: pointer;
     color: ${(props) => props.theme['base-label']};
 
-    transition: color 0.15s;
+    transition:
+      background 0.15s,
+      color 0.15s;
 
     &:hover {
+      background: ${(props) => props.theme['base-button']};
       color: ${(props) => props.theme['yellow-dark']};
     }
   }

@@ -53,7 +53,7 @@ export function Header() {
             <UserArea>
               <span title={user?.email}>{firstName}</span>
               <button type="button" onClick={handleSignOut} aria-label="Sair">
-                <SignOut size={18} />
+                <SignOut size={20} />
               </button>
             </UserArea>
           ) : (
