@@ -34,6 +34,7 @@ export const Cover = styled.div`
   margin-bottom: 6.75rem;
 
   img {
+    width: 29.75rem;
     max-width: 100%;
     height: auto;
   }

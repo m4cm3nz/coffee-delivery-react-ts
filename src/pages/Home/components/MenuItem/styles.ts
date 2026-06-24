@@ -24,6 +24,8 @@ export const Header = styled.header`
   gap: 0.75rem;
 
   img {
+    width: 7.5rem;
+    height: 7.5rem;
     margin-top: -1.25rem;
   }
 
