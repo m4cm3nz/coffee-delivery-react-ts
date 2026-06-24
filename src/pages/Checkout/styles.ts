@@ -33,6 +33,8 @@ export const Container = styled.div`
 `
 
 export const OrderInfo = styled.main`
+  min-width: 0;
+
   h3 {
     font-family: 'Baloo 2';
     font-weight: 800;
@@ -44,13 +46,16 @@ export const OrderInfo = styled.main`
   > p {
     font-size: 1.25rem;
     color: ${(props) => props.theme['base-subtitle']};
+
+    strong {
+      color: ${(props) => props.theme['yellow-dark']};
+    }
   }
 `
+
 export const BulletContainer = styled.ul`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-content: flex-start;
 
   width: 32.875rem;
   max-width: 100%;
@@ -93,4 +98,66 @@ export const BulletIcon = styled.span<{ $color: keyof DefaultTheme }>`
 
   color: ${(props) => props.theme.white};
   background: ${(props) => props.theme[props.$color]};
+`
+
+export const Summary = styled.section`
+  width: 32.875rem;
+  max-width: 100%;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  border-radius: 6px 2.25rem 6px 2.25rem;
+
+  background: ${(props) => props.theme['base-card']};
+
+  h4 {
+    margin-bottom: 1rem;
+    font-family: 'Baloo 2';
+    font-size: 1.125rem;
+    color: ${(props) => props.theme['base-title']};
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    margin-bottom: 1rem;
+    list-style: none;
+  }
+
+  li,
+  > div,
+  > strong {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  li {
+    font-size: 0.875rem;
+    color: ${(props) => props.theme['base-text']};
+  }
+
+  li span:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  li span:last-child {
+    white-space: nowrap;
+  }
+
+  > div {
+    padding-top: 0.75rem;
+    border-top: 1px solid ${(props) => props.theme['base-button']};
+
+    font-size: 0.875rem;
+    color: ${(props) => props.theme['base-text']};
+  }
+
+  > strong {
+    margin-top: 0.5rem;
+    font-size: 1.25rem;
+    color: ${(props) => props.theme['base-title']};
+  }
 `

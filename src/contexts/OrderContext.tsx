@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useEffect,
-  useReducer,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useEffect, useReducer, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   addNewItemAction,
@@ -13,6 +7,7 @@ import {
   updateItemAmountAction,
 } from '../reducers/cart/actions'
 import { cartReducer, deriveCart } from '../reducers/cart/reducer'
+import { Order, createOrder } from '../util/order'
 
 export interface Item {
   id: string
@@ -22,7 +17,7 @@ export interface Item {
   amount: number
 }
 
-interface Address {
+export interface Address {
   postalCode: string
   street: string
   number: string
@@ -40,10 +35,9 @@ export const PaymentMethods = {
 
 export type PaymentMethodKeys = keyof typeof PaymentMethods
 
-interface Delivery {
-  address: string
-  paymentMethod: string
-}
+const CART_KEY = '@coffee-delivery:cart-state'
+const LAST_ORDER_KEY = '@coffee-delivery:last-order'
+const ORDERS_KEY = '@coffee-delivery:orders'
 
 interface OrderContextType {
   items: Item[]
@@ -52,7 +46,7 @@ interface OrderContextType {
   subTotal: number
   deliveryTax: number
   total: number
-  delivery: Delivery
+  lastOrder: Order | null
   addItem: (item: Item) => void
   removeItem: (id: string) => void
   updateItemAmount: (id: string, value: number) => void
@@ -67,14 +61,36 @@ interface OrderContextProviderProps {
   children: ReactNode
 }
 
+function formatAddress(address: Address): string {
+  const { street, number, postalCode, city, neighborhood, complement, state } =
+    address
+
+  const line = complement
+    ? `${street}, ${number}, ${complement}`
+    : `${street}, ${number}`
+
+  return `${line} - ${postalCode} - ${neighborhood} - ${city}, ${state}`
+}
+
+function persistOrder(order: Order) {
+  try {
+    localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order))
+
+    const stored = localStorage.getItem(ORDERS_KEY)
+    const orders: Order[] = stored ? JSON.parse(stored) : []
+    orders.push(order)
+    localStorage.setItem(ORDERS_KEY, JSON.stringify(orders))
+  } catch {
+    // Non-fatal: the order is still shown via in-memory state.
+  }
+}
+
 export function OrderContextProvider({ children }: OrderContextProviderProps) {
   const [cartState, dispatch] = useReducer(
     cartReducer,
     deriveCart([]),
     (initialState) => {
-      const storedStateAsJson = localStorage.getItem(
-        '@coffee-delivery:cart-state',
-      )
+      const storedStateAsJson = localStorage.getItem(CART_KEY)
 
       if (!storedStateAsJson) return initialState
 
@@ -91,10 +107,7 @@ export function OrderContextProvider({ children }: OrderContextProviderProps) {
 
   useEffect(() => {
     try {
-      localStorage.setItem(
-        '@coffee-delivery:cart-state',
-        JSON.stringify(cartState),
-      )
+      localStorage.setItem(CART_KEY, JSON.stringify(cartState))
     } catch {
       // Storage may be unavailable (private mode, quota exceeded); the cart
       // still works in-memory for this session.
@@ -105,10 +118,16 @@ export function OrderContextProvider({ children }: OrderContextProviderProps) {
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodKeys>()
 
-  const [delivery, setDelivery] = useState<Delivery>({
-    paymentMethod: '',
-    address: '',
+  const [lastOrder, setLastOrder] = useState<Order | null>(() => {
+    try {
+      const stored = localStorage.getItem(LAST_ORDER_KEY)
+      return stored ? (JSON.parse(stored) as Order) : null
+    } catch {
+      return null
+    }
   })
+
+  const navigate = useNavigate()
 
   function addItem(item: Item) {
     dispatch(addNewItemAction(item))
@@ -122,42 +141,29 @@ export function OrderContextProvider({ children }: OrderContextProviderProps) {
     dispatch(updateItemAmountAction(id, value))
   }
 
-  const navigate = useNavigate()
-
-  function confirmOrder(address: Address) {
-    setDelivery({
-      paymentMethod: PaymentMethods[paymentMethod!],
-      address: getDeliveryAddress(address)!,
-    })
-
-    navigate('/checkout')
-
-    dispatch(clearItemsAction())
-    setPaymentMethod(undefined)
-  }
-
   function selectPaymentMethod(type: PaymentMethodKeys) {
     setPaymentMethod(type)
   }
 
-  function getDeliveryAddress(address: Address | undefined) {
-    if (address) {
-      const {
-        street,
-        number,
-        postalCode,
-        city,
-        neighborhood,
-        complement,
-        state,
-      } = address
+  function confirmOrder(address: Address) {
+    if (!paymentMethod || items.length === 0) return
 
-      return `${
-        complement
-          ? `${street}, ${number}, ${complement}`
-          : `${street}, ${number}`
-      } - ${postalCode} - ${neighborhood} - ${city}, ${state}`
-    }
+    const order = createOrder({
+      items,
+      subTotal,
+      deliveryTax,
+      total,
+      address: formatAddress(address),
+      paymentMethod: PaymentMethods[paymentMethod],
+    })
+
+    persistOrder(order)
+    setLastOrder(order)
+
+    dispatch(clearItemsAction())
+    setPaymentMethod(undefined)
+
+    navigate('/checkout')
   }
 
   return (
@@ -169,7 +175,7 @@ export function OrderContextProvider({ children }: OrderContextProviderProps) {
         subTotal,
         deliveryTax,
         total,
-        delivery,
+        lastOrder,
         addItem,
         removeItem,
         updateItemAmount,
