@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
+import { Button as BaseButton } from '../../../../components/Button'
 
 export const SectionContainer = styled.section`
   padding: 2.5rem;
@@ -8,6 +9,10 @@ export const SectionContainer = styled.section`
   width: 100%;
 
   background: ${(props) => props.theme['base-card']};
+
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+  }
 
   header {
     display: flex;
@@ -44,42 +49,6 @@ export const SectionContainer = styled.section`
   }
 `
 
-interface ButtonProps {
-  isSelected: boolean
-}
-
-export const Button = styled.button<ButtonProps>`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  gap: 0.75rem;
-
-  border-radius: 6px;
-  border: 0;
-  padding: 16px;
-
-  background: ${(props) =>
-    props.isSelected
-      ? props.theme['purple-light']
-      : props.theme['base-button']};
-
-  ${(props) =>
-    props.isSelected &&
-    css`
-      border: 2px solid ${props.theme.purple};
-    `}
-
-  color: ${(props) => props.theme['base-text']};
-
-  text-transform: uppercase;
-  font-size: 12px;
-  line-height: 160%;
-
-  :hover {
-    background: ${(props) => props.theme['base-hover']};
-    cursor: pointer;
-  }
+export const Button = styled(BaseButton).attrs({ $variant: 'secondary' })`
+  flex: 1 1 12rem;
 `
