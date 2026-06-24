@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 
 export const HeaderContainer = styled.header`
   display: flex;
@@ -7,6 +8,7 @@ export const HeaderContainer = styled.header`
 
   position: sticky;
   top: 0;
+  z-index: 10;
 
   width: 100%;
   height: 6.5rem;
@@ -29,6 +31,7 @@ export const HeaderContainer = styled.header`
 
   div {
     display: flex;
+    align-items: center;
     width: 100%;
     gap: 0.75rem;
   }
@@ -37,10 +40,11 @@ export const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     justify-content: right;
+    flex-wrap: wrap;
 
     width: 100%;
 
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 `
 
@@ -62,6 +66,12 @@ export const Localization = styled(BaseSpanContainer)`
 
   svg {
     color: ${(props) => props.theme.purple};
+  }
+
+  @media (max-width: 600px) {
+    span {
+      display: none;
+    }
   }
 `
 
@@ -98,5 +108,70 @@ export const CheckoutButton = styled(BaseSpanContainer)`
     border-radius: 999px;
     color: ${(props) => props.theme.white};
     background: ${(props) => props.theme['yellow-dark']};
+  }
+`
+
+export const SignInLink = styled(NavLink)`
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  white-space: nowrap;
+
+  font-size: 0.875rem;
+  color: ${(props) => props.theme['purple-dark']};
+  background: ${(props) => props.theme['purple-light']};
+
+  svg {
+    color: ${(props) => props.theme.purple};
+  }
+
+  transition: filter 0.15s;
+
+  &:hover {
+    filter: brightness(0.97);
+  }
+`
+
+export const UserArea = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.375rem 0.5rem 0.375rem 0.75rem;
+  border-radius: 6px;
+  background: ${(props) => props.theme['base-card']};
+
+  > span {
+    max-width: 8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 0.875rem;
+    color: ${(props) => props.theme['base-title']};
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    color: ${(props) => props.theme['base-label']};
+
+    transition: color 0.15s;
+
+    &:hover {
+      color: ${(props) => props.theme['yellow-dark']};
+    }
   }
 `

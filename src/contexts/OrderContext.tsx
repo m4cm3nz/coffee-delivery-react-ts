@@ -6,8 +6,15 @@ import {
   removeItemAction,
   updateItemAmountAction,
 } from '../reducers/cart/actions'
-import { cartReducer, deriveCart } from '../reducers/cart/reducer'
+import { cartReducer } from '../reducers/cart/reducer'
 import { Order, createOrder } from '../util/order'
+import {
+  loadCart,
+  loadLastOrder,
+  mergeGuestCartInto,
+  saveCart,
+  saveOrder,
+} from '../util/cartStorage'
 
 export interface Item {
   id: string
@@ -35,10 +42,6 @@ export const PaymentMethods = {
 
 export type PaymentMethodKeys = keyof typeof PaymentMethods
 
-const CART_KEY = '@coffee-delivery:cart-state'
-const LAST_ORDER_KEY = '@coffee-delivery:last-order'
-const ORDERS_KEY = '@coffee-delivery:orders'
-
 interface OrderContextType {
   items: Item[]
   itemsCount: number
@@ -59,6 +62,7 @@ export const OrderContext = createContext({} as OrderContextType)
 
 interface OrderContextProviderProps {
   children: ReactNode
+  userId: string
 }
 
 function formatAddress(address: Address): string {
@@ -72,60 +76,27 @@ function formatAddress(address: Address): string {
   return `${line} - ${postalCode} - ${neighborhood} - ${city}, ${state}`
 }
 
-function persistOrder(order: Order) {
-  try {
-    localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order))
-
-    const stored = localStorage.getItem(ORDERS_KEY)
-    const orders: Order[] = stored ? JSON.parse(stored) : []
-    orders.push(order)
-    localStorage.setItem(ORDERS_KEY, JSON.stringify(orders))
-  } catch {
-    // Non-fatal: the order is still shown via in-memory state.
-  }
-}
-
-export function OrderContextProvider({ children }: OrderContextProviderProps) {
-  const [cartState, dispatch] = useReducer(
-    cartReducer,
-    deriveCart([]),
-    (initialState) => {
-      const storedStateAsJson = localStorage.getItem(CART_KEY)
-
-      if (!storedStateAsJson) return initialState
-
-      try {
-        const stored = JSON.parse(storedStateAsJson)
-        // Re-derive totals from persisted items so any stale or
-        // legacy-shaped state is normalized on load.
-        return deriveCart(stored.items ?? [])
-      } catch {
-        return initialState
-      }
-    },
-  )
+export function OrderContextProvider({
+  children,
+  userId,
+}: OrderContextProviderProps) {
+  // The provider is remounted (keyed) when the user changes, so initializing
+  // from the user's scoped storage here is enough — no cross-user effects.
+  const [cartState, dispatch] = useReducer(cartReducer, userId, (id) => {
+    mergeGuestCartInto(id)
+    return loadCart(id)
+  })
 
   useEffect(() => {
-    try {
-      localStorage.setItem(CART_KEY, JSON.stringify(cartState))
-    } catch {
-      // Storage may be unavailable (private mode, quota exceeded); the cart
-      // still works in-memory for this session.
-    }
-  }, [cartState])
+    saveCart(userId, cartState)
+  }, [cartState, userId])
 
   const { items, itemsCount, subTotal, deliveryTax, total } = cartState
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodKeys>()
-
-  const [lastOrder, setLastOrder] = useState<Order | null>(() => {
-    try {
-      const stored = localStorage.getItem(LAST_ORDER_KEY)
-      return stored ? (JSON.parse(stored) as Order) : null
-    } catch {
-      return null
-    }
-  })
+  const [lastOrder, setLastOrder] = useState<Order | null>(() =>
+    loadLastOrder(userId),
+  )
 
   const navigate = useNavigate()
 
@@ -157,7 +128,7 @@ export function OrderContextProvider({ children }: OrderContextProviderProps) {
       paymentMethod: PaymentMethods[paymentMethod],
     })
 
-    persistOrder(order)
+    saveOrder(userId, order)
     setLastOrder(order)
 
     dispatch(clearItemsAction())

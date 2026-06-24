@@ -11,6 +11,9 @@ const Order = lazy(() =>
 const Checkout = lazy(() =>
   import('./pages/Checkout').then((m) => ({ default: m.Checkout })),
 )
+const Login = lazy(() =>
+  import('./pages/Login').then((m) => ({ default: m.Login })),
+)
 const NotFound = lazy(() =>
   import('./pages/NotFound').then((m) => ({ default: m.NotFound })),
 )
@@ -22,6 +25,7 @@ export function Router() {
         <Route index element={<Home />} />
         <Route path="order" element={<Order />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

@@ -1,5 +1,7 @@
 import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { OrderContext, Item } from '../../../../contexts/OrderContext'
+import { useAuth } from '../../../../contexts/AuthContext'
 import formatValue from '../../../../util/formatValue'
 
 import { CartItem } from '../CartItem'
@@ -15,10 +17,17 @@ export function Cart() {
     removeItem,
     updateItemAmount,
   } = useContext(OrderContext)
+  const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
 
   const hasItems = items.length > 0
-  const needsPaymentMethod = hasItems && paymentMethod === undefined
-  const canConfirm = hasItems && paymentMethod !== undefined
+  const needsPaymentMethod =
+    hasItems && isAuthenticated && paymentMethod === undefined
+  const canConfirm = hasItems && isAuthenticated && paymentMethod !== undefined
+
+  function goToLogin() {
+    navigate('/login', { state: { from: '/order' } })
+  }
 
   return (
     <CartContainer>
@@ -53,14 +62,23 @@ export function Cart() {
           <strong>Total</strong>
           <strong>R$ {formatValue(total)}</strong>
         </div>
-        {needsPaymentMethod && (
-          <PaymentHint role="alert">
-            Selecione uma forma de pagamento para continuar.
-          </PaymentHint>
+
+        {hasItems && !isAuthenticated ? (
+          <Button type="button" onClick={goToLogin}>
+            Entrar para finalizar
+          </Button>
+        ) : (
+          <>
+            {needsPaymentMethod && (
+              <PaymentHint role="alert">
+                Selecione uma forma de pagamento para continuar.
+              </PaymentHint>
+            )}
+            <Button type="submit" disabled={!canConfirm}>
+              Confirmar Pedido
+            </Button>
+          </>
         )}
-        <Button type="submit" disabled={!canConfirm}>
-          Confirmar Pedido
-        </Button>
       </footer>
     </CartContainer>
   )
