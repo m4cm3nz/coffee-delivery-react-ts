@@ -1,6 +1,7 @@
 import { InputNumber } from '../../../../components/InputNumber'
 import formatValue from '../../../../util/formatValue'
 import { Item } from '../../../../contexts/OrderContext'
+import { coffeeMenu } from '../../../../data/coffeeMenu'
 import { CartItemContainer, Controls, Details, Price } from './styles'
 
 interface CartItemProps {
@@ -14,9 +15,13 @@ export function CartItem({
   onRemoveItem,
   onAmountChange,
 }: CartItemProps) {
+  // Resolve the image from the catalog by id so persisted carts stay valid
+  // even when asset paths change (the stored item.image may be stale).
+  const image = coffeeMenu.find((coffee) => coffee.id === item.id)?.image ?? item.image
+
   return (
     <CartItemContainer>
-      <img src={item.image} alt={item.name} />
+      <img src={image} alt={item.name} loading="lazy" />
       <Details>
         <h4>{item.name}</h4>
         <Controls>
