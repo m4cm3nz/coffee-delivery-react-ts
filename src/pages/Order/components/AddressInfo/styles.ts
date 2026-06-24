@@ -103,3 +103,12 @@ export const ErrorMessage = styled.span`
   line-height: 1;
   color: ${(props) => props.theme.yellow};
 `
+
+export const Status = styled.span`
+  min-height: 0.875rem;
+  padding-left: 0.25rem;
+
+  font-size: 0.75rem;
+  line-height: 1;
+  color: ${(props) => props.theme['base-label']};
+`
