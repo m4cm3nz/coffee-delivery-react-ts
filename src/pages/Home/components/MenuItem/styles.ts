@@ -7,10 +7,12 @@ export const MenuItemContainer = styled.article`
   justify-content: space-between;
 
   width: 16rem;
-  height: 19.375rem;
+  min-height: 19.375rem;
   margin-top: 1.25rem;
   padding: 0 1.25rem 1.25rem 1.25rem;
   border-radius: 6px 2.25rem 6px 2.25rem;
+
+  gap: 1.5rem;
 
   background: ${(props) => props.theme['base-card']};
 `
@@ -41,7 +43,7 @@ export const Header = styled.header`
       padding: 4px 8px 4px 8px;
       border-radius: 100px;
 
-      background: ${(props) => props.theme['yelloW-light']};
+      background: ${(props) => props.theme['yellow-light']};
       color: ${(props) => props.theme['yellow-dark']};
 
       font-weight: 700;
@@ -74,43 +76,52 @@ export const Footer = styled.footer`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: right;
+  justify-content: space-between;
 
   gap: 0.5rem;
 
   width: 100%;
+`
 
-  span {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
+export const Price = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 0.125rem;
 
-    gap: 2px;
+  color: ${(props) => props.theme['base-text']};
 
-    strong {
-      width: 1.25rem;
-      font-weight: 800;
-      font-size: 1.5rem;
-      font-family: 'Baloo 2', cursive;
-    }
+  small {
+    font-size: 0.875rem;
   }
+
+  strong {
+    font-weight: 800;
+    font-size: 1.5rem;
+    font-family: 'Baloo 2', cursive;
+  }
+`
+
+export const Order = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 
   a {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0.5rem;
-    border-radius: 6px;
-
     width: 2.375rem;
     height: 2.375rem;
+    border-radius: 6px;
 
     color: ${(props) => props.theme.white};
     background: ${(props) => props.theme['purple-dark']};
 
-    :hover {
+    transition: background 0.15s;
+
+    &:hover {
       background: ${(props) => props.theme.purple};
     }
   }

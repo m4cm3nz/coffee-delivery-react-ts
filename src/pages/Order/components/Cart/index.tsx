@@ -3,7 +3,7 @@ import { OrderContext, Item } from '../../../../contexts/OrderContext'
 import formatValue from '../../../../util/formatValue'
 
 import { CartItem } from '../CartItem'
-import { Button, CartContainer } from './styles'
+import { Button, CartContainer, EmptyCart } from './styles'
 
 export function Cart() {
   const {
@@ -22,25 +22,31 @@ export function Cart() {
   return (
     <CartContainer>
       <section>
-        <ul>
-          {items.map((item: Item) => (
-            <CartItem
-              key={item.id}
-              item={item}
-              onRemoveItem={removeItem}
-              onAmountChange={updateItemAmount}
-            />
-          ))}
-        </ul>
+        {items.length === 0 ? (
+          <EmptyCart>
+            Seu carrinho está vazio. Adicione cafés para continuar.
+          </EmptyCart>
+        ) : (
+          <ul>
+            {items.map((item: Item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                onRemoveItem={removeItem}
+                onAmountChange={updateItemAmount}
+              />
+            ))}
+          </ul>
+        )}
       </section>
       <footer>
         <div>
-          <label>Total de itens</label>
-          <label>R$ {formatValue(subTotal)}</label>
+          <span>Total de itens</span>
+          <span>R$ {formatValue(subTotal)}</span>
         </div>
         <div>
-          <label>Entrega</label>
-          <label>R$ {formatValue(deliveryTax)}</label>
+          <span>Entrega</span>
+          <span>R$ {formatValue(deliveryTax)}</span>
         </div>
         <div>
           <strong>Total</strong>

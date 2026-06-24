@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { DefaultTheme } from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
@@ -10,6 +10,26 @@ export const Container = styled.div`
   width: 100%;
 
   padding: 5rem 8% 0 8%;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 920px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 3rem 6% 2rem 6%;
+
+    img {
+      max-width: 20rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 2rem 1.5rem;
+  }
 `
 
 export const OrderInfo = styled.main`
@@ -33,6 +53,7 @@ export const BulletContainer = styled.ul`
   align-content: flex-start;
 
   width: 32.875rem;
+  max-width: 100%;
   margin-top: 2.5rem;
 
   list-style: none;
@@ -50,16 +71,26 @@ export const Bullet = styled.li`
 
   font-size: 1rem;
 
-  span {
-    width: 2rem;
-    height: 2rem;
-    padding: 0.5rem;
-    border-radius: 999px;
-    color: ${(props) => props.theme.white};
-  }
-
   div {
     display: flex;
     flex-direction: column;
+
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
+`
+
+export const BulletIcon = styled.span<{ $color: keyof DefaultTheme }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+
+  color: ${(props) => props.theme.white};
+  background: ${(props) => props.theme[props.$color]};
 `

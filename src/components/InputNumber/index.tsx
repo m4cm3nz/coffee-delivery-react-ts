@@ -1,40 +1,62 @@
-import { Minus, Plus } from 'phosphor-react'
-import { InputHTMLAttributes, useRef } from 'react'
+import { Minus, Plus, Trash } from '@phosphor-icons/react'
 import { AmountInput } from './styles'
 
-type InputNumberProps = InputHTMLAttributes<HTMLInputElement> & {
+type InputNumberProps = {
   value: number
   onValueChange: (value: number) => void
+  min?: number
+  max?: number
+  /**
+   * When provided, pressing "−" at the minimum value removes the item
+   * instead of being a no-op, and the button shows a trash icon.
+   */
+  onRemove?: () => void
 }
 
 export function InputNumber({
   value,
   onValueChange,
-  ...rest
+  min = 1,
+  max = 99,
+  onRemove,
 }: InputNumberProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const atMin = value <= min
+  const showRemove = atMin && !!onRemove
 
-  function handleValueDecraese() {
-    const { current } = inputRef
-
-    if (current && current.valueAsNumber > parseInt(current.min))
-      onValueChange((current.valueAsNumber -= 1))
+  function handleDecrease() {
+    if (value > min) {
+      onValueChange(value - 1)
+    } else if (onRemove) {
+      onRemove()
+    }
   }
 
-  function handleValueIncraese() {
-    const { current } = inputRef
-
-    if (current && current.valueAsNumber < parseInt(current.max))
-      onValueChange((current.valueAsNumber += 1))
+  function handleIncrease() {
+    if (value < max) onValueChange(value + 1)
   }
 
   return (
     <AmountInput>
-      <button type="button" onClick={handleValueDecraese}>
-        <Minus size={14} weight="bold" />
+      <button
+        type="button"
+        onClick={handleDecrease}
+        disabled={atMin && !onRemove}
+        data-danger={showRemove}
+        aria-label={showRemove ? 'Remover item' : 'Diminuir quantidade'}
+      >
+        {showRemove ? (
+          <Trash size={14} weight="bold" />
+        ) : (
+          <Minus size={14} weight="bold" />
+        )}
       </button>
-      <input ref={inputRef} type="number" defaultValue={value} {...rest} />
-      <button type="button" onClick={handleValueIncraese}>
+      <span aria-live="polite">{value}</span>
+      <button
+        type="button"
+        onClick={handleIncrease}
+        disabled={value >= max}
+        aria-label="Aumentar quantidade"
+      >
         <Plus size={14} weight="bold" />
       </button>
     </AmountInput>

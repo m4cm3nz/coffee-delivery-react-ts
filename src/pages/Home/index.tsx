@@ -1,6 +1,12 @@
-import { Bullet, BulletContainer, Cover, HomeContainer, Menu } from './styles'
-import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
-import { defaultTheme } from '../../styles/themes/default'
+import {
+  Bullet,
+  BulletContainer,
+  BulletIcon,
+  Cover,
+  HomeContainer,
+  Menu,
+} from './styles'
+import { Coffee, Package, ShoppingCart, Timer } from '@phosphor-icons/react'
 import home from '../../assets/home.svg'
 import { MenuItem } from './components/MenuItem'
 import { coffeeMenu } from '../../data/coffeeMenu'
@@ -8,8 +14,6 @@ import { OrderContext, Item } from '../../contexts/OrderContext'
 import { useContext } from 'react'
 
 export function Home() {
-  const theme = defaultTheme
-
   const { addItem } = useContext(OrderContext)
 
   function handleAddItemToCart(item: Item) {
@@ -27,32 +31,32 @@ export function Home() {
           </p>
           <BulletContainer>
             <Bullet>
-              <span style={{ background: theme['yellow-dark'] }}>
+              <BulletIcon $color="yellow-dark">
                 <ShoppingCart size={16} weight="fill" />
-              </span>
+              </BulletIcon>
               Compra simples e segura
             </Bullet>
             <Bullet>
-              <span style={{ background: theme.yellow }}>
+              <BulletIcon $color="yellow">
                 <Timer size={16} weight="fill" />
-              </span>
+              </BulletIcon>
               Entrega rápida e rastreada
             </Bullet>
             <Bullet>
-              <span style={{ background: theme['base-text'] }}>
+              <BulletIcon $color="base-text">
                 <Package size={16} weight="fill" />
-              </span>
+              </BulletIcon>
               Embalagem mantém o café intacto
             </Bullet>
             <Bullet>
-              <span style={{ background: theme.purple }}>
+              <BulletIcon $color="purple">
                 <Coffee size={16} weight="fill" />
-              </span>
+              </BulletIcon>
               O café chega quentinho até você
             </Bullet>
           </BulletContainer>
         </div>
-        <img src={home} alt="um lindo copo de café"></img>
+        <img src={home} alt="Copo de café com grãos ao redor" />
       </Cover>
       <Menu>
         <h3>Nossos cafés</h3>
