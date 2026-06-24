@@ -12,7 +12,7 @@ import {
   removeItemAction,
   updateItemAmountAction,
 } from '../reducers/cart/actions'
-import { cartReducer } from '../reducers/cart/reducer'
+import { cartReducer, deriveCart } from '../reducers/cart/reducer'
 
 export interface Item {
   id: string
@@ -60,6 +60,7 @@ interface OrderContextType {
   confirmOrder: (data: Address) => void
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const OrderContext = createContext({} as OrderContextType)
 
 interface OrderContextProviderProps {
@@ -67,16 +68,26 @@ interface OrderContextProviderProps {
 }
 
 export function OrderContextProvider({ children }: OrderContextProviderProps) {
-  const noItemsCartState = {
-    items: [],
-  }
+  const [cartState, dispatch] = useReducer(
+    cartReducer,
+    deriveCart([]),
+    (initialState) => {
+      const storedStateAsJson = localStorage.getItem(
+        '@coffee-delivery:cart-state',
+      )
 
-  const [cartState, dispach] = useReducer(cartReducer, noItemsCartState, () => {
-    const storedStateAsJson = localStorage.getItem(
-      '@coffee-delivery:cart-state',
-    )
-    return storedStateAsJson ? JSON.parse(storedStateAsJson) : noItemsCartState
-  })
+      if (!storedStateAsJson) return initialState
+
+      try {
+        const stored = JSON.parse(storedStateAsJson)
+        // Re-derive totals from persisted items so any stale or
+        // legacy-shaped state is normalized on load.
+        return deriveCart(stored.items ?? [])
+      } catch {
+        return initialState
+      }
+    },
+  )
 
   useEffect(() => {
     localStorage.setItem(
@@ -95,15 +106,15 @@ export function OrderContextProvider({ children }: OrderContextProviderProps) {
   })
 
   function addItem(item: Item) {
-    dispach(addNewItemAction(item))
+    dispatch(addNewItemAction(item))
   }
 
   function removeItem(id: string) {
-    dispach(removeItemAction(id))
+    dispatch(removeItemAction(id))
   }
 
   function updateItemAmount(id: string, value: number) {
-    dispach(updateItemAmountAction(id, value))
+    dispatch(updateItemAmountAction(id, value))
   }
 
   const navigate = useNavigate()
@@ -116,7 +127,7 @@ export function OrderContextProvider({ children }: OrderContextProviderProps) {
 
     navigate('/checkout')
 
-    dispach(clearItemsAction())
+    dispatch(clearItemsAction())
     setPaymentMethod(undefined)
   }
 

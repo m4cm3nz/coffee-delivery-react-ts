@@ -9,45 +9,50 @@ import { useContext } from 'react'
 import { OrderContext } from '../../contexts/OrderContext'
 
 const addressValidationSchema = zod.object({
-  postalCode: zod.string().min(10, 'Preencha o código postal').max(10),
-  street: zod.string().min(5).max(120),
-  number: zod.string().min(1).max(20),
-  neighborhood: zod.string().min(5).max(60),
-  city: zod.string().min(5).max(60),
-  state: zod.string().min(2).max(20),
+  postalCode: zod
+    .string()
+    .min(10, 'Informe um código postal válido')
+    .max(10, 'Informe um código postal válido'),
+  street: zod.string().min(1, 'Informe a rua').max(120),
+  number: zod.string().min(1, 'Informe o número').max(20),
+  complement: zod.string().max(80).optional(),
+  neighborhood: zod.string().min(1, 'Informe o bairro').max(60),
+  city: zod.string().min(1, 'Informe a cidade').max(60),
+  state: zod.string().min(1, 'UF').max(20),
 })
 
-type AddressFromData = zod.infer<typeof addressValidationSchema>
+type AddressFormData = zod.infer<typeof addressValidationSchema>
 
 export function Order() {
   const { confirmOrder } = useContext(OrderContext)
 
-  const checkoutFrom = useForm<AddressFromData>({
+  const checkoutForm = useForm<AddressFormData>({
     resolver: zodResolver(addressValidationSchema),
     defaultValues: {
       postalCode: '',
       street: '',
       number: '',
+      complement: '',
       neighborhood: '',
       city: '',
       state: '',
     },
   })
 
-  const { handleSubmit } = checkoutFrom
+  const { handleSubmit } = checkoutForm
 
-  function handleOrderConfirm(address: AddressFromData) {
+  function handleOrderConfirm(address: AddressFormData) {
     confirmOrder(address)
   }
 
   return (
     <OrderContainer>
-      <form onSubmit={handleSubmit(handleOrderConfirm)} action="">
+      <form onSubmit={handleSubmit(handleOrderConfirm)}>
         <main>
           <header>
             <h4>Complete seu pedido</h4>
           </header>
-          <FormProvider {...checkoutFrom}>
+          <FormProvider {...checkoutForm}>
             <AddressInfo />
             <PaymentMethod />
           </FormProvider>

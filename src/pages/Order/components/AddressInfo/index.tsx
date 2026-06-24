@@ -1,10 +1,13 @@
-import { MapPin } from 'phosphor-react'
+import { MapPin } from '@phosphor-icons/react'
 import { FormEvent, useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { Input, SectionContainer } from './styles'
+import { ErrorMessage, Field, Input, SectionContainer } from './styles'
 
 export function AddressInfo() {
-  const { register } = useFormContext()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext()
 
   const handleCEPKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
     e.currentTarget.maxLength = 10
@@ -23,65 +26,98 @@ export function AddressInfo() {
         </div>
       </header>
       <fieldset>
-        <Input
-          id="postal-code"
-          type="text"
-          placeholder="Código Postal"
-          title="código postal"
-          onKeyUp={handleCEPKeyUp}
-          {...register('postalCode')}
-        />
-        <Input
-          id="street"
-          type="text"
-          maxLength={120}
-          placeholder="Rua"
-          title="rua"
-          {...register('street')}
-        />
         <div>
-          <Input
-            id="number"
-            type="text"
-            maxLength={12}
-            placeholder="Numero"
-            title="numero"
-            {...register('number')}
-          />
-          <Input
-            id="complement"
-            type="text"
-            maxLength={80}
-            placeholder="Complemento"
-            title="complemento"
-            {...register('complement')}
-          />
+          <Field $width="12.5rem">
+            <Input
+              id="postal-code"
+              type="text"
+              placeholder="Código Postal"
+              aria-label="Código postal"
+              $hasError={!!errors.postalCode}
+              onKeyUp={handleCEPKeyUp}
+              {...register('postalCode')}
+            />
+            <ErrorMessage>{errors.postalCode?.message as string}</ErrorMessage>
+          </Field>
         </div>
+
         <div>
-          <Input
-            id="neighborhood"
-            type="text"
-            maxLength={60}
-            placeholder="Bairro"
-            title="bairro"
-            {...register('neighborhood')}
-          />
-          <Input
-            id="city"
-            type="text"
-            maxLength={80}
-            placeholder="Cidade"
-            title="cidade"
-            {...register('city')}
-          />
-          <Input
-            id="state"
-            type="text"
-            maxLength={2}
-            placeholder="UF"
-            title="estado"
-            {...register('state')}
-          />
+          <Field $grow>
+            <Input
+              id="street"
+              type="text"
+              maxLength={120}
+              placeholder="Rua"
+              aria-label="Rua"
+              $hasError={!!errors.street}
+              {...register('street')}
+            />
+            <ErrorMessage>{errors.street?.message as string}</ErrorMessage>
+          </Field>
+        </div>
+
+        <div>
+          <Field $width="7.5rem">
+            <Input
+              id="number"
+              type="text"
+              maxLength={12}
+              placeholder="Número"
+              aria-label="Número"
+              $hasError={!!errors.number}
+              {...register('number')}
+            />
+            <ErrorMessage>{errors.number?.message as string}</ErrorMessage>
+          </Field>
+          <Field $grow>
+            <Input
+              id="complement"
+              type="text"
+              maxLength={80}
+              placeholder="Complemento"
+              aria-label="Complemento (opcional)"
+              {...register('complement')}
+            />
+          </Field>
+        </div>
+
+        <div>
+          <Field $width="12.5rem">
+            <Input
+              id="neighborhood"
+              type="text"
+              maxLength={60}
+              placeholder="Bairro"
+              aria-label="Bairro"
+              $hasError={!!errors.neighborhood}
+              {...register('neighborhood')}
+            />
+            <ErrorMessage>{errors.neighborhood?.message as string}</ErrorMessage>
+          </Field>
+          <Field $grow>
+            <Input
+              id="city"
+              type="text"
+              maxLength={80}
+              placeholder="Cidade"
+              aria-label="Cidade"
+              $hasError={!!errors.city}
+              {...register('city')}
+            />
+            <ErrorMessage>{errors.city?.message as string}</ErrorMessage>
+          </Field>
+          <Field $width="4rem">
+            <Input
+              id="state"
+              type="text"
+              maxLength={2}
+              placeholder="UF"
+              aria-label="Estado (UF)"
+              $hasError={!!errors.state}
+              {...register('state')}
+            />
+            <ErrorMessage>{errors.state?.message as string}</ErrorMessage>
+          </Field>
         </div>
       </fieldset>
     </SectionContainer>
