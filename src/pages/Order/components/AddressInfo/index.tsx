@@ -1,4 +1,4 @@
-import { MapPin, Plus, Star, Trash } from '@phosphor-icons/react'
+import { MapPin, PencilSimple, Plus, Star, Trash } from '@phosphor-icons/react'
 import { FormEvent, useCallback, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { fetchAddressByCep, onlyDigits } from '../../../../util/cep'
@@ -66,10 +66,13 @@ export function AddressInfo({
   const hasContent =
     currentFields.street.trim().length > 0 &&
     currentFields.number.trim().length > 0
-  const showSaveBlock = isAuthenticated && hasContent && !matchedSaved
+  const isEditing = !!values.addressId
+  const editingLabel = addresses.find((a) => a.id === values.addressId)?.label
+  const showSaveBlock =
+    isAuthenticated && hasContent && (isEditing || !matchedSaved)
   const saveChecked = !!values.saveAddress
 
-  function selectAddress(address: SavedAddress) {
+  function fillFields(address: SavedAddress) {
     setValue('postalCode', address.postalCode, { shouldValidate: true })
     setValue('street', address.street, { shouldValidate: true })
     setValue('number', address.number, { shouldValidate: true })
@@ -77,10 +80,24 @@ export function AddressInfo({
     setValue('neighborhood', address.neighborhood, { shouldValidate: true })
     setValue('city', address.city, { shouldValidate: true })
     setValue('state', address.state, { shouldValidate: true })
-    setValue('addressId', address.id)
     setValue('addressLabel', address.label)
-    setValue('makeDefault', address.isDefault)
+  }
+
+  // Use a saved address for this order (does not bind it for editing).
+  function selectForOrder(address: SavedAddress) {
+    fillFields(address)
+    setValue('addressId', '')
+    setValue('makeDefault', false)
     setValue('saveAddress', false)
+  }
+
+  // Edit a saved address in place — saving updates this entry.
+  function editAddress(address: SavedAddress) {
+    fillFields(address)
+    setValue('addressId', address.id)
+    setValue('makeDefault', address.isDefault)
+    setValue('saveAddress', true)
+    setFocus('street')
   }
 
   function startNewAddress() {
@@ -159,12 +176,12 @@ export function AddressInfo({
           {addresses.map((address) => (
             <AddressCard
               key={address.id}
-              $selected={values.addressId === address.id}
+              $selected={matchedSaved?.id === address.id}
             >
               <button
                 type="button"
                 className="select"
-                onClick={() => selectAddress(address)}
+                onClick={() => selectForOrder(address)}
               >
                 <span className="label">
                   {address.label}
@@ -176,6 +193,14 @@ export function AddressInfo({
                 </span>
               </button>
               <div className="actions">
+                <button
+                  type="button"
+                  title="Editar endereço"
+                  aria-label={`Editar ${address.label}`}
+                  onClick={() => editAddress(address)}
+                >
+                  <PencilSimple size={16} />
+                </button>
                 {!address.isDefault && (
                   <button
                     type="button"
@@ -311,9 +336,19 @@ export function AddressInfo({
 
       {showSaveBlock && (
         <SaveBlock>
+          {isEditing && (
+            <p className="editing">
+              Editando {editingLabel ? `“${editingLabel}”` : 'endereço salvo'}
+              <button type="button" onClick={startNewAddress}>
+                cancelar
+              </button>
+            </p>
+          )}
           <label className="save-toggle">
             <input type="checkbox" {...register('saveAddress')} />
-            Salvar este endereço para a próxima vez
+            {isEditing
+              ? 'Salvar alterações deste endereço'
+              : 'Salvar este endereço para a próxima vez'}
           </label>
           {saveChecked && (
             <div className="save-options">

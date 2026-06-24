@@ -55,10 +55,12 @@ export function Order() {
         neighborhood: defaultAddress.neighborhood,
         city: defaultAddress.city,
         state: defaultAddress.state,
-        addressId: defaultAddress.id,
+        // No addressId: the prefill is for *using* the address, not editing it.
+        // Editing in place is an explicit action (pencil) in the picker.
+        addressId: '',
         addressLabel: defaultAddress.label,
         saveAddress: false,
-        makeDefault: defaultAddress.isDefault,
+        makeDefault: false,
       })
     } else {
       setValue('saveAddress', true)

@@ -258,6 +258,28 @@ export const SaveBlock = styled.div`
     cursor: pointer;
   }
 
+  .editing {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    font-size: 0.8125rem;
+    color: ${(props) => props.theme['purple-dark']};
+
+    button {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: ${(props) => props.theme['base-label']};
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    button:hover {
+      color: ${(props) => props.theme['yellow-dark']};
+    }
+  }
+
   .save-options {
     display: flex;
     flex-wrap: wrap;
