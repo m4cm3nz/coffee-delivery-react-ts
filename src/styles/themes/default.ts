@@ -9,7 +9,7 @@ export const defaultTheme = {
   'base-card': '#F3F2F2',
 
   'yellow-dark': '#C47F17',
-  'yelloW-light': '#F1E9C9',
+  'yellow-light': '#F1E9C9',
   'purple-dark': '#4B2995',
   'purple-light': '#EBE5F9',
 

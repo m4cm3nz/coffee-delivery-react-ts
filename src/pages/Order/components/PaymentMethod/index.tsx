@@ -1,4 +1,4 @@
-import { Bank, CreditCard, CurrencyDollar, Money } from 'phosphor-react'
+import { Bank, CreditCard, CurrencyDollar, Money } from '@phosphor-icons/react'
 import { MouseEvent, useContext } from 'react'
 
 import {
@@ -35,7 +35,7 @@ export function PaymentMethod() {
           id="credit"
           type="button"
           onClick={handleSelectPaymentMethod}
-          isSelected={credit}
+          $selected={credit}
         >
           <Bank size={16} />
           Cartão de Crédito
@@ -44,7 +44,7 @@ export function PaymentMethod() {
           id="debit"
           type="button"
           onClick={handleSelectPaymentMethod}
-          isSelected={debit}
+          $selected={debit}
         >
           <CreditCard size={16} />
           Cartão de Débito
@@ -53,7 +53,7 @@ export function PaymentMethod() {
           id="cash"
           type="button"
           onClick={handleSelectPaymentMethod}
-          isSelected={cash}
+          $selected={cash}
         >
           <Money size={16} />
           Dinheiro

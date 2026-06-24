@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import background from '../../assets/background.png'
+import styled, { DefaultTheme } from 'styled-components'
+import background from '../../assets/background.webp'
 
 export const HomeContainer = styled.main`
   display: flex;
@@ -14,6 +14,15 @@ export const HomeContainer = styled.main`
   background: url(${background}) center center;
   background-repeat: repeat-x;
   background-size: cover;
+
+  @media (max-width: 920px) {
+    height: auto;
+    padding: 3rem 6% 0 6%;
+  }
+
+  @media (max-width: 600px) {
+    padding: 2rem 1.5rem 0 1.5rem;
+  }
 `
 
 export const Cover = styled.div`
@@ -23,6 +32,12 @@ export const Cover = styled.div`
 
   width: 100%;
   margin-bottom: 6.75rem;
+
+  img {
+    width: 29.75rem;
+    max-width: 100%;
+    height: auto;
+  }
 
   h1 {
     font-family: 'Baloo 2', cursive;
@@ -37,18 +52,48 @@ export const Cover = styled.div`
     font-size: 1.25rem;
     color: ${(props) => props.theme['base-subtitle']};
   }
+
+  @media (max-width: 920px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    margin-bottom: 3.5rem;
+    text-align: center;
+
+    img {
+      order: -1;
+      max-width: 18rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
 `
 
 export const BulletContainer = styled.ul`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 1.25rem 2.5rem;
 
-  height: 8rem;
   margin-top: 4.125rem;
 
   list-style: none;
+
+  @media (max-width: 920px) {
+    margin-top: 2.5rem;
+    justify-content: center;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 export const Bullet = styled.li`
@@ -57,18 +102,21 @@ export const Bullet = styled.li`
   align-items: center;
   gap: 0.75rem;
 
-  width: 50%;
-  margin: 0 0 1.25rem 0;
-
   font-size: 1rem;
+`
 
-  span {
-    width: 2rem;
-    height: 2rem;
-    padding: 0.5rem;
-    border-radius: 999px;
-    color: ${(props) => props.theme.white};
-  }
+export const BulletIcon = styled.span<{ $color: keyof DefaultTheme }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+
+  color: ${(props) => props.theme.white};
+  background: ${(props) => props.theme[props.$color]};
 `
 
 export const Menu = styled.div`
@@ -89,11 +137,23 @@ export const Menu = styled.div`
   }
 
   ul {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 2.5rem 2rem;
 
     list-style: none;
+  }
+
+  li {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 600px) {
+    padding-bottom: 4rem;
+
+    h3 {
+      font-size: 1.5rem;
+    }
   }
 `

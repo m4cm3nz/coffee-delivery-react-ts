@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Button as BaseButton } from '../../../../components/Button'
 
 export const CartContainer = styled.article`
   padding: 2.5rem;
@@ -6,8 +7,16 @@ export const CartContainer = styled.article`
 
   background: ${(props) => props.theme['base-card']};
 
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+  }
+
   ul {
     list-style: none;
+  }
+
+  > section {
+    margin-bottom: 1.5rem;
   }
 
   footer {
@@ -21,7 +30,7 @@ export const CartContainer = styled.article`
 
       width: 100%;
 
-      label:first-of-type {
+      span:first-of-type {
         font-size: 0.875rem;
       }
 
@@ -37,36 +46,12 @@ export const CartContainer = styled.article`
   }
 `
 
-export const Button = styled.button`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+export const EmptyCart = styled.p`
+  padding: 1.5rem 0;
+  text-align: center;
+  color: ${(props) => props.theme['base-label']};
+`
 
-  gap: 0.75rem;
-
-  border-radius: 6px;
-  border: 0;
-  padding: 16px;
+export const Button = styled(BaseButton).attrs({ $variant: 'primary' })`
   width: 100%;
-
-  background: ${(props) => props.theme.yellow};
-  color: ${(props) => props.theme.white};
-
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 700;
-  font-size: 14px;
-
-  line-height: 160%;
-
-  :disabled {
-    background: ${(props) => props.theme['yelloW-light']};
-  }
-
-  :not(:disabled):hover {
-    background: ${(props) => props.theme['yellow-dark']};
-    cursor: pointer;
-  }
 `

@@ -13,13 +13,20 @@ import {
   Latte,
   Macchiato,
   Mochaccino,
-} from '../util/coffeImages'
+} from '../util/coffeeImages'
 
-import { v4 as uuid } from 'uuid'
+export interface Coffee {
+  id: string
+  image: string
+  tags: string[]
+  name: string
+  description: string
+  price: number
+}
 
-export const coffeeMenu = [
+export const coffeeMenu: Coffee[] = [
   {
-    id: uuid(),
+    id: 'expresso-tradicional',
     image: Expresso,
     tags: ['tradicional'],
     name: 'Expresso Tradicional',
@@ -27,7 +34,7 @@ export const coffeeMenu = [
     price: 9.9,
   },
   {
-    id: uuid(),
+    id: 'expresso-americano',
     image: ExpressoAmericano,
     tags: ['tradicional'],
     name: 'Expresso Americano',
@@ -35,7 +42,7 @@ export const coffeeMenu = [
     price: 9.0,
   },
   {
-    id: uuid(),
+    id: 'expresso-cremoso',
     image: ExpressoCremoso,
     tags: ['tradicional', 'com leite'],
     name: 'Expresso Cremoso',
@@ -43,7 +50,7 @@ export const coffeeMenu = [
     price: 10.25,
   },
   {
-    id: uuid(),
+    id: 'expresso-gelado',
     image: ExpressoGelado,
     tags: ['tradicional', 'gelado'],
     name: 'Expresso Gelado',
@@ -51,7 +58,7 @@ export const coffeeMenu = [
     price: 8,
   },
   {
-    id: uuid(),
+    id: 'cafe-com-leite',
     image: CafeComLeite,
     tags: ['tradicional', 'com leite'],
     name: 'Café com Leite',
@@ -59,7 +66,7 @@ export const coffeeMenu = [
     price: 12.3,
   },
   {
-    id: uuid(),
+    id: 'latte',
     image: Latte,
     tags: ['tradicional', 'com leite'],
     name: 'Latte',
@@ -68,7 +75,7 @@ export const coffeeMenu = [
     price: 12,
   },
   {
-    id: uuid(),
+    id: 'capuccino',
     image: Capuccino,
     tags: ['tradicional', 'com leite'],
     name: 'Capuccino',
@@ -77,7 +84,7 @@ export const coffeeMenu = [
     price: 9.9,
   },
   {
-    id: uuid(),
+    id: 'macchiato',
     image: Macchiato,
     tags: ['tradicional', 'com leite'],
     name: 'Macchiato',
@@ -86,15 +93,15 @@ export const coffeeMenu = [
     price: 12,
   },
   {
-    id: uuid(),
+    id: 'mochaccino',
     image: Mochaccino,
     tags: ['tradicional', 'com leite'],
-    name: 'Mocaccino',
+    name: 'Mochaccino',
     description: 'Café expresso com calda de chocolate, pouco leite e espuma',
     price: 15,
   },
   {
-    id: uuid(),
+    id: 'chocolate-quente',
     image: ChocolateQuente,
     tags: ['especial', 'com leite'],
     name: 'Chocolate Quente',
@@ -102,7 +109,7 @@ export const coffeeMenu = [
     price: 17,
   },
   {
-    id: uuid(),
+    id: 'cubano',
     image: Cubano,
     tags: ['especial', 'alcoólico', 'gelado'],
     name: 'Cubano',
@@ -111,7 +118,7 @@ export const coffeeMenu = [
     price: 20,
   },
   {
-    id: uuid(),
+    id: 'havaiano',
     image: Havaiano,
     tags: ['especial'],
     name: 'Havaiano',
@@ -119,18 +126,18 @@ export const coffeeMenu = [
     price: 15,
   },
   {
-    id: uuid(),
+    id: 'arabe',
     image: Arabe,
     tags: ['especial'],
-    name: 'Arabe',
+    name: 'Árabe',
     description: 'Bebida preparada com grãos de café árabe e especiarias',
     price: 17,
   },
   {
-    id: uuid(),
+    id: 'irlandes',
     image: Irlandes,
     tags: ['especial', 'alcoólico'],
-    name: 'Expresso Tradicional',
+    name: 'Irlandês',
     description: 'Bebida a base de café, uísque irlandês, açúcar e chantilly',
     price: 19,
   },
