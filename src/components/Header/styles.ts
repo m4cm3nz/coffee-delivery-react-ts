@@ -29,7 +29,7 @@ export const HeaderContainer = styled.header`
     }
   }
 
-  div {
+  > div {
     display: flex;
     align-items: center;
     width: 100%;
