@@ -52,6 +52,12 @@ export const EmptyCart = styled.p`
   color: ${(props) => props.theme['base-label']};
 `
 
+export const PaymentHint = styled.p`
+  text-align: center;
+  font-size: 0.8125rem;
+  color: ${(props) => props.theme['yellow-dark']};
+`
+
 export const Button = styled(BaseButton).attrs({ $variant: 'primary' })`
   width: 100%;
 `

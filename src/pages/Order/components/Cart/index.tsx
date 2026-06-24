@@ -3,7 +3,7 @@ import { OrderContext, Item } from '../../../../contexts/OrderContext'
 import formatValue from '../../../../util/formatValue'
 
 import { CartItem } from '../CartItem'
-import { Button, CartContainer, EmptyCart } from './styles'
+import { Button, CartContainer, EmptyCart, PaymentHint } from './styles'
 
 export function Cart() {
   const {
@@ -16,17 +16,14 @@ export function Cart() {
     updateItemAmount,
   } = useContext(OrderContext)
 
-  const requireUserInteraction =
-    paymentMethod === undefined || items.length === 0
+  const hasItems = items.length > 0
+  const needsPaymentMethod = hasItems && paymentMethod === undefined
+  const canConfirm = hasItems && paymentMethod !== undefined
 
   return (
     <CartContainer>
       <section>
-        {items.length === 0 ? (
-          <EmptyCart>
-            Seu carrinho está vazio. Adicione cafés para continuar.
-          </EmptyCart>
-        ) : (
+        {hasItems ? (
           <ul>
             {items.map((item: Item) => (
               <CartItem
@@ -37,6 +34,10 @@ export function Cart() {
               />
             ))}
           </ul>
+        ) : (
+          <EmptyCart>
+            Seu carrinho está vazio. Adicione cafés para continuar.
+          </EmptyCart>
         )}
       </section>
       <footer>
@@ -52,7 +53,12 @@ export function Cart() {
           <strong>Total</strong>
           <strong>R$ {formatValue(total)}</strong>
         </div>
-        <Button type="submit" disabled={requireUserInteraction}>
+        {needsPaymentMethod && (
+          <PaymentHint role="alert">
+            Selecione uma forma de pagamento para continuar.
+          </PaymentHint>
+        )}
+        <Button type="submit" disabled={!canConfirm}>
           Confirmar Pedido
         </Button>
       </footer>
